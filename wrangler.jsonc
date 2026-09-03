@@ -1,0 +1,17 @@
+{
+  "name": "davidaruck-site",
+  "compatibility_date": "2026-08-14",
+  "assets": {
+    "directory": "./public"
+  },
+  "routes": [
+    {
+      "pattern": "davidaruck.com",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.davidaruck.com",
+      "custom_domain": true
+    }
+  ]
+}
