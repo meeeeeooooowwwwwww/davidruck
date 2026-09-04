@@ -1,8 +1,10 @@
 {
   "name": "davidaruck-site",
+  "main": "src/index.js",
   "compatibility_date": "2026-08-14",
   "assets": {
-    "directory": "./public"
+    "directory": "./public",
+    "binding": "ASSETS"
   },
   "routes": [
     {
