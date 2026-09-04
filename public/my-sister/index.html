@@ -16,22 +16,21 @@
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://davidaruck.com/my-sister/">
   <style>
-    .sister-page{padding-top:clamp(2.5rem,6vw,5rem);padding-bottom:clamp(4rem,8vw,7rem)}
-    .sister-intro{max-width:1120px;margin:0 auto 2rem}
-    .sister-intro h1{margin-bottom:.35rem}
-    .sister-name{font-size:clamp(1.15rem,2vw,1.45rem);opacity:.84;margin:0 0 .5rem}
-    .sister-coming{font-size:clamp(1.05rem,1.7vw,1.2rem);opacity:.72;margin:0}
-    .video-shell{width:min(1120px,100%);margin:2.25rem auto 0}
-    .video-frame{position:relative;width:100%;aspect-ratio:16/9;background:#050505;border:1px solid rgba(255,255,255,.12);border-radius:18px;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.38)}
-    .video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
-    .video-status{position:absolute;inset:0;display:grid;place-items:center;padding:2rem;text-align:center;color:rgba(255,255,255,.72);font-size:.95rem}
-    .video-status[hidden]{display:none}
+    .sister-page{padding:clamp(2.5rem,5vw,4.5rem) clamp(1rem,3vw,2rem) clamp(4rem,7vw,6rem)}
+    .sister-intro{width:min(1180px,100%);margin:0 auto 1.75rem}
+    .sister-intro h1{margin:0 0 .35rem;font-size:clamp(2.2rem,4vw,4rem)}
+    .sister-name{font-size:clamp(1.15rem,2vw,1.45rem);opacity:.86;margin:.15rem 0 .4rem}
+    .sister-coming{font-size:clamp(1rem,1.5vw,1.15rem);opacity:.68;margin:0}
+    .video-shell{width:min(1180px,100%);margin:1.75rem auto 0}
+    .video-frame{position:relative;width:100%;aspect-ratio:16/9;background:#000;border:1px solid rgba(255,255,255,.12);border-radius:16px;overflow:hidden;box-shadow:0 26px 80px rgba(0,0,0,.42)}
+    .video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:#000}
     .video-actions{display:flex;justify-content:flex-start;margin-top:1rem}
     .video-actions .button{margin:0}
     @media (max-width:720px){
-      .sister-page{padding-top:2rem}
-      .video-shell{margin-top:1.5rem}
-      .video-frame{border-radius:12px}
+      .sister-page{padding:1.75rem .8rem 3.5rem}
+      .sister-intro{margin-bottom:1.1rem}
+      .video-shell{margin-top:1.1rem}
+      .video-frame{border-radius:10px}
       .video-actions .button{width:100%;text-align:center}
     }
   </style>
@@ -63,8 +62,15 @@
     </section>
 
     <section class="video-shell" aria-label="Featured video">
-      <div class="video-frame" id="rumble-frame">
-        <div class="video-status" id="rumble-status">Loading video…</div>
+      <div class="video-frame">
+        <iframe
+          src="https://rumble.com/embed/v7cqxfy/?pub=4kxtac"
+          title="Selfie - The Chainsmokers"
+          loading="eager"
+          allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen>
+        </iframe>
       </div>
       <div class="video-actions">
         <a class="button primary" href="https://rumble.com/v6zh68m-selfie-the-chainsmokers.html" target="_blank" rel="noopener noreferrer">Watch on Rumble</a>
@@ -83,29 +89,5 @@
     <div class="footer-sites"><a href="https://grideater.com" target="_blank" rel="noopener noreferrer">GRID EATER</a><span>·</span><a href="https://americafirst.co.nz" target="_blank" rel="noopener noreferrer">America First Ltd</a><span>·</span><a href="https://nataliegwinters.com" target="_blank" rel="noopener noreferrer">Natalie G. Winters</a></div>
   </footer>
 </div>
-<script>
-(async () => {
-  const frame = document.getElementById('rumble-frame');
-  const status = document.getElementById('rumble-status');
-
-  try {
-    const response = await fetch('/api/rumble/my-sister', { headers: { 'Accept': 'application/json' } });
-    const data = await response.json();
-    if (!response.ok || !data.ok || !data.src) throw new Error(data.error || 'Embed unavailable');
-
-    const iframe = document.createElement('iframe');
-    iframe.src = data.src;
-    iframe.title = data.title || 'Selfie - The Chainsmokers';
-    iframe.loading = 'eager';
-    iframe.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
-    iframe.allowFullscreen = true;
-    iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-    frame.appendChild(iframe);
-    status.hidden = true;
-  } catch (error) {
-    status.textContent = 'Video preview unavailable. Use “Watch on Rumble” below.';
-  }
-})();
-</script>
 </body>
 </html>
