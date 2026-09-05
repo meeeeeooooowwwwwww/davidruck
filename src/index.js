@@ -1,10 +1,32 @@
 const RUMBLE_VIDEO_URL = 'https://rumble.com/v6zh68m-selfie-the-chainsmokers.html';
 
+class RemoveElementHandler {
+  element(element) {
+    element.remove();
+  }
+}
+
+class DeniseStoryLinkHandler {
+  element(element) {
+    element.setAttribute('href', '/my-account/denise-ruck/');
+  }
+}
+
+class DeniseStoryLabelHandler {
+  element(element) {
+    element.setInnerContent('Read Story One: Denise Ruck →');
+  }
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    if (url.pathname === '/api/rumble/my-sister') {
+    if (url.pathname === '/my-sister' || url.pathname.startsWith('/my-sister/')) {
+      return Response.redirect(`${url.origin}/my-account/denise-ruck/`, 301);
+    }
+
+    if (url.pathname === '/api/rumble/my-sister' || url.pathname === '/api/rumble/denise-ruck') {
       const endpoint = `https://rumble.com/api/Media/oembed.json?url=${encodeURIComponent(RUMBLE_VIDEO_URL)}`;
 
       try {
@@ -57,6 +79,19 @@ export default {
       }
     }
 
-    return env.ASSETS.fetch(request);
+    const response = await env.ASSETS.fetch(request);
+    const contentType = response.headers.get('content-type') || '';
+
+    if (!contentType.includes('text/html')) {
+      return response;
+    }
+
+    return new HTMLRewriter()
+      .on('.nav-links a[href="/my-account/"]', new RemoveElementHandler())
+      .on('.nav-links a[href="/my-sister/"]', new RemoveElementHandler())
+      .on('.nav-links a[href="/my-account/denise-ruck/"]', new RemoveElementHandler())
+      .on('.prose a[href="/my-sister/"]', new DeniseStoryLinkHandler())
+      .on('.prose a[href="/my-sister/"] strong', new DeniseStoryLabelHandler())
+      .transform(response);
   }
 };
