@@ -1,8 +1,21 @@
 const RUMBLE_VIDEO_URL = 'https://rumble.com/v6zh68m-selfie-the-chainsmokers.html';
 
-class RemoveElementHandler {
+// Global site chrome. These are the single source of truth for every HTML page.
+// Keep the public-facing navigation professional-first: deeper personal-history
+// material is intentionally reached through contextual links inside the site.
+const GLOBAL_HEADER = `<nav class="nav" aria-label="Primary navigation"><a class="brand" href="/" aria-label="David Ruck home">DAR.</a><div class="nav-links"><a href="/about/">About</a><a href="/0199/">0199</a><a href="/career/">Career</a><a href="/digital/">Digital</a><a href="/media/">Media</a><a href="/grid-eater/">GRID EATER</a><a href="/contact/">Contact</a></div></nav>`;
+
+const GLOBAL_FOOTER = `<div class="footer-copy"><strong>David Ruck</strong><br><span>© 2026 · Christchurch, New Zealand · davidaruck.com</span></div><div class="footer-social" aria-label="David Ruck social profiles"><a class="social-link" href="https://substack.com/@davidruck" target="_blank" rel="me noopener noreferrer"><img src="/assets/icons/substack.svg" alt="" width="22" height="22"><span>Substack</span></a><a class="social-link" href="https://www.linkedin.com/in/davidaruck/" target="_blank" rel="me noopener noreferrer"><img src="/assets/icons/linkedin.svg" alt="" width="22" height="22"><span>LinkedIn</span></a><a class="social-link" href="https://www.youtube.com/@AmericaFirstNZ" target="_blank" rel="me noopener noreferrer"><img src="/assets/icons/youtube.svg" alt="" width="22" height="22"><span>YouTube</span></a><a class="social-link" href="https://rumble.com/user/NatalieGWinters" target="_blank" rel="me noopener noreferrer"><img src="/assets/icons/rumble.svg" alt="" width="22" height="22"><span>Rumble</span></a></div><div class="footer-sites"><a href="https://grideater.com" target="_blank" rel="noopener noreferrer">GRID EATER</a><span>·</span><a href="https://americafirst.co.nz" target="_blank" rel="noopener noreferrer">America First Ltd</a><span>·</span><a href="https://nataliegwinters.com" target="_blank" rel="noopener noreferrer">Natalie G. Winters</a></div>`;
+
+class GlobalHeaderHandler {
   element(element) {
-    element.remove();
+    element.setInnerContent(GLOBAL_HEADER, { html: true });
+  }
+}
+
+class GlobalFooterHandler {
+  element(element) {
+    element.setInnerContent(GLOBAL_FOOTER, { html: true });
   }
 }
 
@@ -87,9 +100,8 @@ export default {
     }
 
     return new HTMLRewriter()
-      .on('.nav-links a[href="/my-account/"]', new RemoveElementHandler())
-      .on('.nav-links a[href="/my-sister/"]', new RemoveElementHandler())
-      .on('.nav-links a[href="/my-account/denise-ruck/"]', new RemoveElementHandler())
+      .on('.site-header', new GlobalHeaderHandler())
+      .on('.footer', new GlobalFooterHandler())
       .on('.prose a[href="/my-sister/"]', new DeniseStoryLinkHandler())
       .on('.prose a[href="/my-sister/"] strong', new DeniseStoryLabelHandler())
       .transform(response);
