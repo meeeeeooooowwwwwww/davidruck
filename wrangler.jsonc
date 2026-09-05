@@ -2,7 +2,11 @@
   "name": "davidaruck-site",
   "compatibility_date": "2026-08-14",
   "assets": {
-    "directory": "./public"
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": [
+      "/my-account/*"
+    ]
   },
   "routes": [
     {
