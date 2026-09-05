@@ -18,6 +18,14 @@ npx wrangler deploy
 
 Wrangler will deploy the existing custom-domain routes defined in `wrangler.jsonc`.
 
+## Global header and footer
+
+The site header and footer are global server-side components defined in `src/index.js` as `GLOBAL_HEADER` and `GLOBAL_FOOTER`.
+
+They use the professional homepage navigation and the full homepage footer as the single source of truth for all HTML pages. Do not maintain page-specific header or footer variants. When the site-wide header or footer changes, update the global component once in `src/index.js`.
+
+`wrangler.jsonc` routes HTML/page paths through the Worker so `HTMLRewriter` applies the global components. Static assets such as CSS, icons and images are not deliberately routed through the Worker.
+
 ## Information architecture
 
 The public-facing site is intentionally professional-first. Primary navigation should contain only About, 0199, Career, Digital, Media, GRID EATER and Contact.
