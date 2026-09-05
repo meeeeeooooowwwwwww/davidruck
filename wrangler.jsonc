@@ -1,11 +1,13 @@
 {
   "name": "davidaruck-site",
+  "main": "src/index.js",
   "compatibility_date": "2026-08-14",
   "assets": {
     "directory": "./public",
     "binding": "ASSETS",
     "run_worker_first": [
-      "/my-account/*"
+      "/my-account/*",
+      "/my-sister*"
     ]
   },
   "routes": [
