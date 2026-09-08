@@ -3,7 +3,7 @@ const RUMBLE_VIDEO_URL = 'https://rumble.com/v6zh68m-selfie-the-chainsmokers.htm
 // Global site chrome. These are the single source of truth for every HTML page.
 // Keep the public-facing navigation professional-first: deeper personal-history
 // material is intentionally reached through contextual links inside the site.
-const GLOBAL_HEADER = `<nav class="nav" aria-label="Primary navigation"><a class="brand" href="/" aria-label="David Ruck home">DAR.</a><div class="nav-links"><a href="/about/">About</a><a href="/0199/">0199</a><a href="/career/">Career</a><a href="/digital/">Digital</a><a href="/media/">Media</a><a href="/grid-eater/">GRID EATER</a><a href="/contact/">Contact</a></div></nav>`;
+const GLOBAL_HEADER = `<nav class="nav" aria-label="Primary navigation"><a class="brand" href="/" aria-label="David Ruck home">David Ruck</a><div class="nav-links"><a href="/about/">About</a><a href="/0199/">0199</a><a href="/career/">Career</a><a href="/digital/">Digital</a><a href="/media/">Media</a><a href="/grid-eater/">GRID EATER</a><a href="/contact/">Contact</a></div></nav>`;
 
 const GLOBAL_FOOTER = `<div class="footer-copy"><strong>David Ruck</strong><br><span>© 2026 · Christchurch, New Zealand · davidaruck.com</span></div><div class="footer-social" aria-label="David Ruck social profiles"><a class="social-link" href="https://substack.com/@davidruck" target="_blank" rel="me noopener noreferrer"><img src="/assets/icons/substack.svg" alt="" width="22" height="22"><span>Substack</span></a><a class="social-link" href="https://www.linkedin.com/in/davidaruck/" target="_blank" rel="me noopener noreferrer"><img src="/assets/icons/linkedin.svg" alt="" width="22" height="22"><span>LinkedIn</span></a><a class="social-link" href="https://www.youtube.com/@AmericaFirstNZ" target="_blank" rel="me noopener noreferrer"><img src="/assets/icons/youtube.svg" alt="" width="22" height="22"><span>YouTube</span></a><a class="social-link" href="https://rumble.com/user/NatalieGWinters" target="_blank" rel="me noopener noreferrer"><img src="/assets/icons/rumble.svg" alt="" width="22" height="22"><span>Rumble</span></a></div><div class="footer-sites"><a href="https://grideater.com" target="_blank" rel="noopener noreferrer">GRID EATER</a><span>·</span><a href="https://americafirst.co.nz" target="_blank" rel="noopener noreferrer">America First Ltd</a><span>·</span><a href="https://nataliegwinters.com" target="_blank" rel="noopener noreferrer">Natalie G. Winters</a></div>`;
 
@@ -34,6 +34,12 @@ class DeniseStoryLinkHandler {
 class DeniseStoryLabelHandler {
   element(element) {
     element.setInnerContent('Read Story One: Denise Ruck →');
+  }
+}
+
+class MyAccountSourceNoteHandler {
+  element(element) {
+    element.setInnerContent('<h3>Contemporary record</h3><p>These links are included so readers can distinguish my present-day account and recollection from surviving contemporary reporting. External articles include criticism and viewpoints I do not necessarily agree with.</p><p><a href="https://youtu.be/R2CZyDfmz5s" target="_blank" rel="noopener noreferrer"><strong>TVNZ / Te Karere: Pākehā Party support comparison ↗</strong></a> · <a href="https://www.critic.co.nz/news/article/3086/pakehahaha-are-they-serious" target="_blank" rel="noopener noreferrer">Critic Te Ārohi, 2013 ↗</a> · <a href="https://www.sunlive.co.nz/news/48443-pakeha-party-hits-chord-locals.html" target="_blank" rel="noopener noreferrer">SunLive, 11 July 2013 ↗</a> · <a href="https://natlib.govt.nz/records/32377880" target="_blank" rel="noopener noreferrer">National Library of New Zealand ↗</a></p>', { html: true });
   }
 }
 
@@ -105,12 +111,17 @@ export default {
       return response;
     }
 
-    return new HTMLRewriter()
+    let rewriter = new HTMLRewriter()
       .on('head', new GlobalThemeHandler())
       .on('.site-header', new GlobalHeaderHandler())
       .on('.footer', new GlobalFooterHandler())
       .on('.prose a[href="/my-sister/"]', new DeniseStoryLinkHandler())
-      .on('.prose a[href="/my-sister/"] strong', new DeniseStoryLabelHandler())
-      .transform(response);
+      .on('.prose a[href="/my-sister/"] strong', new DeniseStoryLabelHandler());
+
+    if (url.pathname === '/my-account/' || url.pathname === '/my-account') {
+      rewriter = rewriter.on('.source-note', new MyAccountSourceNoteHandler());
+    }
+
+    return rewriter.transform(response);
   }
 };
