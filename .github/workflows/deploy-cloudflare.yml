@@ -1,0 +1,41 @@
+name: Deploy davidaruck.com to Cloudflare
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: davidaruck-cloudflare-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_KEY: ${{ secrets.CLOUDFLARE_GLOBAL }}
+      CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+    steps:
+      - name: Checkout davidruck repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Validate Worker
+        run: |
+          node --check src/index.js
+          npx wrangler deploy --dry-run --outdir .wrangler/dry-run
+
+      - name: Deploy davidaruck.com
+        run: npx wrangler deploy --message "Deploy davidaruck.com from GitHub main"
