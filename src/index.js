@@ -37,21 +37,39 @@ class DeniseStoryLabelHandler {
   }
 }
 
+class TextContentHandler {
+  constructor(content, html = false) {
+    this.content = content;
+    this.html = html;
+  }
+
+  element(element) {
+    element.setInnerContent(this.content, { html: this.html });
+  }
+}
+
 class MyAccountSourceNoteHandler {
   element(element) {
     element.setInnerContent('<h3>Contemporary record</h3><p>These links are included so readers can distinguish my present-day account and recollection from surviving contemporary reporting. External articles include criticism and viewpoints I do not necessarily agree with.</p><p><a href="https://youtu.be/R2CZyDfmz5s" target="_blank" rel="noopener noreferrer"><strong>TVNZ / Te Karere: Pākehā Party support comparison ↗</strong></a> · <a href="https://www.critic.co.nz/news/article/3086/pakehahaha-are-they-serious" target="_blank" rel="noopener noreferrer">Critic Te Ārohi, 2013 ↗</a> · <a href="https://www.sunlive.co.nz/news/48443-pakeha-party-hits-chord-locals.html" target="_blank" rel="noopener noreferrer">SunLive, 11 July 2013 ↗</a> · <a href="https://natlib.govt.nz/records/32377880" target="_blank" rel="noopener noreferrer">National Library of New Zealand ↗</a></p>', { html: true });
   }
 }
 
+function normalisePathname(pathname) {
+  if (pathname === '/index.html') return '/';
+  if (pathname.length > 1 && pathname.endsWith('/')) return pathname.slice(0, -1);
+  return pathname;
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    const pathname = normalisePathname(url.pathname);
 
-    if (url.pathname === '/my-sister' || url.pathname.startsWith('/my-sister/')) {
+    if (pathname === '/my-sister' || pathname.startsWith('/my-sister/')) {
       return Response.redirect(`${url.origin}/my-account/denise-ruck/`, 301);
     }
 
-    if (url.pathname === '/api/rumble/my-sister' || url.pathname === '/api/rumble/denise-ruck') {
+    if (pathname === '/api/rumble/my-sister' || pathname === '/api/rumble/denise-ruck') {
       const endpoint = `https://rumble.com/api/Media/oembed.json?url=${encodeURIComponent(RUMBLE_VIDEO_URL)}`;
 
       try {
@@ -118,7 +136,43 @@ export default {
       .on('.prose a[href="/my-sister/"]', new DeniseStoryLinkHandler())
       .on('.prose a[href="/my-sister/"] strong', new DeniseStoryLabelHandler());
 
-    if (url.pathname === '/my-account/' || url.pathname === '/my-account') {
+    // Professional pages keep the first-person voice, but restore clear visible
+    // third-person entity signals for exact-name searches such as "David Ruck".
+    if (pathname === '/') {
+      rewriter = rewriter.on('.hero-summary', new TextContentHandler('<strong>David Ruck</strong> is a Christchurch-based entrepreneur, sales-systems builder and digital operator. I have worked across hospitality, telecommunications, call centres, business data, media, websites, hosting and digital marketing, and my current focus is AI-assisted infrastructure and business discovery.', true));
+      rewriter = rewriter.on('.actions a[href="/about/"]', new TextContentHandler('About David Ruck'));
+      rewriter = rewriter.on('.actions a[href="/career/"]', new TextContentHandler('David Ruck career & ventures'));
+    }
+
+    if (pathname === '/about') {
+      rewriter = rewriter.on('.page-head .lead', new TextContentHandler('<strong>David Ruck</strong> is a Christchurch entrepreneur and systems builder. My career has been unusually broad, but the underlying work has been remarkably consistent: sales, audiences, infrastructure, data and finding better ways to connect businesses with customers.', true));
+    }
+
+    if (pathname === '/career') {
+      rewriter = rewriter.on('.page-head h1', new TextContentHandler('David Ruck: Career & Ventures'));
+      rewriter = rewriter.on('.page-head .lead', new TextContentHandler("David Ruck's career has crossed very different industries, but most of the work comes back to performance, audiences, customer acquisition, systems and technology."));
+    }
+
+    if (pathname === '/digital') {
+      rewriter = rewriter.on('.page-head h1', new TextContentHandler('David Ruck: Digital Marketing, Websites & Infrastructure'));
+      rewriter = rewriter.on('.page-head .lead', new TextContentHandler("David Ruck's digital career grew directly from customer demand around 0199 and became a long-term focus across websites, hosting, domains, search, PPC, analytics, data and automation."));
+    }
+
+    if (pathname === '/media') {
+      rewriter = rewriter.on('.page-head h1', new TextContentHandler('David Ruck: Radio, Television, Events & Christchurch Culture'));
+      rewriter = rewriter.on('.page-head .lead', new TextContentHandler('David Ruck began learning how audiences form through restaurants, parties, rave events, radio and television. Surreal Entertainment began while I was still very young in Christchurch.'));
+    }
+
+    if (pathname === '/0199') {
+      rewriter = rewriter.on('.page-head h1', new TextContentHandler('David Ruck and the real origin of 0199 Directory Assistance'));
+    }
+
+    if (pathname === '/grid-eater') {
+      rewriter = rewriter.on('.page-head h1', new TextContentHandler('GRID EATER by David Ruck'));
+      rewriter = rewriter.on('.page-head .lead', new TextContentHandler("GRID EATER is David Ruck's current Christchurch project, bringing together the strongest lessons from 0199, digital services, hosting, business data, direct sales and AI-assisted development."));
+    }
+
+    if (pathname === '/my-account') {
       rewriter = rewriter.on('.source-note', new MyAccountSourceNoteHandler());
     }
 
