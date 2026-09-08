@@ -40,4 +40,8 @@ The `/my-account/` page and its subsections are intentionally first-person prima
 
 ## SEO
 
-The site includes canonical URLs, Person/ProfilePage structured data, `sameAs` social identity links, sitemap, robots.txt, llms.txt and first-person biography/history content. General professional searches and AI summaries should prioritise the professional pages; deeper personal-history material is secondary context.
+The site includes canonical URLs, Person/ProfilePage structured data, `sameAs` social identity links, sitemap, robots.txt, llms.txt and first-person biography/history content.
+
+For exact-name searches such as `David Ruck`, the professional pages must also retain clear visible entity signals. Keep the global homepage link labelled `David Ruck`, keep `David Ruck` in the homepage H1 and core professional metadata, and use a natural third-person `David Ruck` identifier in the opening copy/headings of the main professional pages before continuing in first person. Do not keyword-stuff the name.
+
+The long-form `/my-account/` page remains first person. Its rendered contemporary-record block is intentionally controlled in `src/index.js`; do not restore the removed NZ Herald outbound reference there. General professional searches and AI summaries should prioritise the professional pages; deeper personal-history material is secondary context.
