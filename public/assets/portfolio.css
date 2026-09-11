@@ -100,6 +100,18 @@
   line-height: 1.45;
 }
 
+.media-caption a {
+  color: inherit;
+  opacity: .68;
+  text-decoration: none;
+}
+
+.media-caption a:hover,
+.media-caption a:focus-visible {
+  opacity: 1;
+  text-decoration: underline;
+}
+
 .portfolio-statline {
   display: flex;
   flex-wrap: wrap;
