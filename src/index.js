@@ -1,15 +1,15 @@
 const RUMBLE_VIDEO_URL = 'https://rumble.com/v6zh68m-selfie-the-chainsmokers.html';
 
 // Global site chrome. These are the single source of truth for every HTML page.
-// Keep the public-facing navigation professional-first: deeper personal-history
-// material is intentionally reached through contextual links inside the site.
-const GLOBAL_HEADER = `<nav class="nav" aria-label="Primary navigation"><a class="brand" href="/" aria-label="David Ruck home">David Ruck</a><div class="nav-links"><a href="/about/">About</a><a href="/career/0199/">0199</a><a href="/career/">Career</a><a href="/digital/">Digital</a><a href="/media/">Media</a><a href="/grid-eater/">GRID EATER</a><a href="/contact/">Contact</a></div></nav>`;
+// Keep the public-facing navigation professional-first while giving major
+// long-form chapters stable homes of their own.
+const GLOBAL_HEADER = `<nav class="nav" aria-label="Primary navigation"><a class="brand" href="/" aria-label="David Ruck home">David Ruck</a><div class="nav-links"><a href="/about/">About</a><a href="/career/">Career</a><a href="/career/0199/">0199</a><a href="/media/">Media</a><a href="/music/">Music</a><a href="/digital/">Digital</a><a href="/grid-eater/">GRID EATER</a><a href="/contact/">Contact</a></div></nav>`;
 
-const GLOBAL_FOOTER = `<div class="footer-copy"><strong>David Ruck</strong><br><span>© 2026 · Christchurch, New Zealand · davidaruck.com</span></div><div class="footer-social" aria-label="David Ruck social profiles"><a class="social-link" href="https://substack.com/@davidruck" target="_blank" rel="me noopener noreferrer"><img src="/assets/icons/substack.svg" alt="" width="22" height="22"><span>Substack</span></a><a class="social-link" href="https://www.linkedin.com/in/davidaruck/" target="_blank" rel="me noopener noreferrer"><img src="/assets/icons/linkedin.svg" alt="" width="22" height="22"><span>LinkedIn</span></a><a class="social-link" href="https://www.youtube.com/@AmericaFirstNZ" target="_blank" rel="me noopener noreferrer"><img src="/assets/icons/youtube.svg" alt="" width="22" height="22"><span>YouTube</span></a><a class="social-link" href="https://rumble.com/user/NatalieGWinters" target="_blank" rel="me noopener noreferrer"><img src="/assets/icons/rumble.svg" alt="" width="22" height="22"><span>Rumble</span></a></div><div class="footer-sites"><a href="https://grideater.com" target="_blank" rel="noopener noreferrer">GRID EATER</a><span>·</span><a href="https://americafirst.co.nz" target="_blank" rel="noopener noreferrer">America First Ltd</a><span>·</span><a href="https://nataliegwinters.com" target="_blank" rel="noopener noreferrer">Natalie G. Winters</a></div>`;
+const GLOBAL_FOOTER = `<div class="footer-copy"><strong>David Ruck</strong><br><span>© 2026 · Christchurch, New Zealand · davidaruck.com</span></div><div class="footer-social" aria-label="David Ruck social profiles"><a class="social-link" href="https://substack.com/@davidruck" target="_blank" rel="me noopener"><img src="/assets/icons/substack.svg" alt="" width="22" height="22"><span>Substack</span></a><a class="social-link" href="https://www.linkedin.com/in/davidaruck/" target="_blank" rel="me noopener"><img src="/assets/icons/linkedin.svg" alt="" width="22" height="22"><span>LinkedIn</span></a><a class="social-link" href="https://www.youtube.com/@AmericaFirstNZ" target="_blank" rel="me noopener"><img src="/assets/icons/youtube.svg" alt="" width="22" height="22"><span>YouTube</span></a><a class="social-link" href="https://rumble.com/user/NatalieGWinters" target="_blank" rel="me noopener"><img src="/assets/icons/rumble.svg" alt="" width="22" height="22"><span>Rumble</span></a></div><div class="footer-sites"><a href="https://grideater.com" target="_blank" rel="noopener">GRID EATER</a><span>·</span><a href="https://americafirst.co.nz" target="_blank" rel="noopener">America First Ltd</a><span>·</span><a href="https://nataliegwinters.com" target="_blank" rel="noopener">Natalie G. Winters</a></div>`;
 
 class GlobalThemeHandler {
   element(element) {
-    element.append('<link rel="stylesheet" href="/assets/aurora-theme.css">', { html: true });
+    element.append('<meta name="referrer" content="strict-origin-when-cross-origin"><link rel="stylesheet" href="/assets/aurora-theme.css">', { html: true });
   }
 }
 
@@ -22,6 +22,16 @@ class GlobalHeaderHandler {
 class GlobalFooterHandler {
   element(element) {
     element.setInnerContent(GLOBAL_FOOTER, { html: true });
+  }
+}
+
+class ExternalReferralLinkHandler {
+  element(element) {
+    // Preserve opener isolation without suppressing davidruck.com as the referrer.
+    const rel = element.getAttribute('rel') || '';
+    const tokens = rel.split(/\s+/).filter(Boolean).filter(token => token !== 'noreferrer' && token !== 'noopener');
+    tokens.push('noopener');
+    element.setAttribute('rel', [...new Set(tokens)].join(' '));
   }
 }
 
@@ -50,7 +60,7 @@ class TextContentHandler {
 
 class MyAccountSourceNoteHandler {
   element(element) {
-    element.setInnerContent('<h3>Contemporary record</h3><p>These links are included so readers can distinguish my present-day account and recollection from surviving contemporary reporting. External articles include criticism and viewpoints I do not necessarily agree with.</p><p><a href="https://youtu.be/R2CZyDfmz5s" target="_blank" rel="noopener noreferrer"><strong>TVNZ / Te Karere: Pākehā Party support comparison ↗</strong></a> · <a href="https://www.critic.co.nz/news/article/3086/pakehahaha-are-they-serious" target="_blank" rel="noopener noreferrer">Critic Te Ārohi, 2013 ↗</a> · <a href="https://www.sunlive.co.nz/news/48443-pakeha-party-hits-chord-locals.html" target="_blank" rel="noopener noreferrer">SunLive, 11 July 2013 ↗</a> · <a href="https://natlib.govt.nz/records/32377880" target="_blank" rel="noopener noreferrer">National Library of New Zealand ↗</a></p>', { html: true });
+    element.setInnerContent('<h3>Contemporary record</h3><p>These links are included so readers can distinguish my present-day account and recollection from surviving contemporary reporting. External articles include criticism and viewpoints I do not necessarily agree with.</p><p><a href="https://youtu.be/R2CZyDfmz5s" target="_blank" rel="noopener"><strong>TVNZ / Te Karere: Pākehā Party support comparison ↗</strong></a> · <a href="https://www.critic.co.nz/news/article/3086/pakehahaha-are-they-serious" target="_blank" rel="noopener">Critic Te Ārohi, 2013 ↗</a> · <a href="https://www.sunlive.co.nz/news/48443-pakeha-party-hits-chord-locals.html" target="_blank" rel="noopener">SunLive, 11 July 2013 ↗</a> · <a href="https://natlib.govt.nz/records/32377880" target="_blank" rel="noopener">National Library of New Zealand ↗</a></p>', { html: true });
   }
 }
 
@@ -137,6 +147,7 @@ export default {
       .on('head', new GlobalThemeHandler())
       .on('.site-header', new GlobalHeaderHandler())
       .on('.footer', new GlobalFooterHandler())
+      .on('a[target="_blank"]', new ExternalReferralLinkHandler())
       .on('.prose a[href="/my-sister/"]', new DeniseStoryLinkHandler())
       .on('.prose a[href="/my-sister/"] strong', new DeniseStoryLabelHandler());
 
@@ -154,7 +165,7 @@ export default {
 
     if (pathname === '/career') {
       rewriter = rewriter.on('.page-head h1', new TextContentHandler('David Ruck: Career & Ventures'));
-      rewriter = rewriter.on('.page-head .lead', new TextContentHandler("David Ruck's career index: the roles, ventures and systems, with deeper stories linked from the résumé."));
+      rewriter = rewriter.on('.page-head .lead', new TextContentHandler("David Ruck's career chapter index: the map of roles and ventures, with each substantial story linked to its own canonical page."));
     }
 
     if (pathname === '/digital') {
@@ -163,8 +174,12 @@ export default {
     }
 
     if (pathname === '/media') {
-      rewriter = rewriter.on('.page-head h1', new TextContentHandler('David Ruck: Radio, Television, Events & Christchurch Culture'));
-      rewriter = rewriter.on('.page-head .lead', new TextContentHandler('David Ruck began learning how audiences form through restaurants, parties, rave events, radio and television. Surreal Entertainment began while I was still very young in Christchurch.'));
+      rewriter = rewriter.on('.page-head h1', new TextContentHandler('David Ruck: Radio, Television, Events & Music'));
+      rewriter = rewriter.on('.page-head .lead', new TextContentHandler('This is the media and culture chapter index. Surreal, ALT TV, PulzarFM After Dark and the separate life-in-music story now have their own pages so each can keep growing without bloating a single timeline.'));
+    }
+
+    if (pathname === '/music') {
+      rewriter = rewriter.on('.page-head h1', new TextContentHandler('David Ruck: A Life in Music'));
     }
 
     if (pathname === '/career/0199') {
