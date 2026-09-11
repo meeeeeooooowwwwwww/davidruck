@@ -91,6 +91,15 @@
   border: 0;
 }
 
+.media-caption {
+  margin: 0;
+  padding: 9px 12px 11px;
+  border-top: 1px solid rgba(132, 158, 186, .12);
+  color: rgba(210, 220, 230, .62);
+  font-size: .72rem;
+  line-height: 1.45;
+}
+
 .portfolio-statline {
   display: flex;
   flex-wrap: wrap;
