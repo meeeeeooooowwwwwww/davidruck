@@ -18,6 +18,8 @@
       "/digital/*",
       "/media",
       "/media/*",
+      "/music",
+      "/music/*",
       "/grid-eater",
       "/grid-eater/*",
       "/contact",
