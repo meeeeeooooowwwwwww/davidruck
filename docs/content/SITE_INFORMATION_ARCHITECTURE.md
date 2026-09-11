@@ -10,14 +10,18 @@ Existing public URLs are treated as permanent. If content moves, the old URL eit
 
 - `/` — professional homepage
 - `/about/` — concise biography and through-line
-- `/career/` — career index and chronology, not the full stories
+- `/career/` — career chapter index, not the full stories
   - `/career/hospitality/`
-  - `/career/hotel-dynamics/` — planned when enough material is documented
+  - `/career/hotel-dynamics/`
   - `/career/telstraclear/`
   - `/career/compass/`
   - `/career/hrv/`
-  - `/career/red-vs-blue/` — planned when the fuller story is documented
+  - `/career/red-vs-blue/`
+  - `/career/mojo-marketing/`
+  - `/career/christchurch-directory/`
+  - `/career/funk-and-fish-and-chips/`
   - `/career/0199/`
+  - `/career/real-websites/`
 - `/media/` — media/events index, not the complete music autobiography
   - `/media/surreal/`
   - `/media/alt-tv/`
@@ -48,5 +52,15 @@ Do not delete or repurpose an established URL merely because a deeper page is in
 ## Content rule
 
 When a role or chapter starts accumulating multiple anecdotes, decisions, people, business lessons or later consequences, it becomes its own page. The parent index should then retain only enough copy to explain why the chapter matters and link through.
+
+Cross-links should reflect the real chronology. HRV can link to Red Vs Blue because that opportunity came through an HRV team member. Compass can link to ALT TV because that is where Jack was met. ALT TV can link to PulzarFM because the After Dark name later returned there.
+
+## External link / referral policy
+
+Where a company, school, media organisation, venue or other identifiable brand is materially part of the story, link to an appropriate official or authoritative external page as well as the internal biography chapter.
+
+The site deliberately uses `strict-origin-when-cross-origin` referrer behaviour and does not use `noreferrer` on ordinary outbound links. That means an external site can normally see `https://davidaruck.com/` as referral traffic in its analytics while the browser still receives `noopener` protection for new tabs.
+
+Do not force external links merely to create traffic. They should be relevant to the sentence, organisation or historical evidence being discussed.
 
 This keeps the site useful as both a portfolio and a living autobiography without turning any one page into an endless wall of text.
