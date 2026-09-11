@@ -15,13 +15,21 @@
   <meta property="og:description" content="The Christchurch and Nelson kitchens where David Ruck learned pressure, consistency, timing and standards before moving into sales and business systems.">
   <meta property="og:url" content="https://davidaruck.com/career/hospitality/">
   <meta property="og:type" content="article">
+  <meta property="og:image" content="https://i.pinimg.com/564x/82/e2/29/82e229c8bfa07edaaaa507e429a614b9.jpg">
   <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://davidaruck.com/#david-ruck","name":"David Ruck","url":"https://davidaruck.com/"},{"@type":"Article","headline":"Hospitality: learning standards before sales","url":"https://davidaruck.com/career/hospitality/","author":{"@id":"https://davidaruck.com/#david-ruck"},"dateModified":"2026-09-12","about":["hospitality","Christchurch restaurants","Nelson restaurants","Parkroyal Christchurch","Aikmans","Mansfield House","Boat Shed Cafe","Le Bon Bolli","Phloyds","Miyazu","Rutherford Hotel"]}]}</script>
   <style>
-    .hospitality-intro { max-width: 980px; }
+    .hospitality-intro { max-width:980px; }
     .venue-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; margin-top:30px; }
     .venue-card { overflow:hidden; padding:0; }
     .venue-card figure { margin:0; }
     .venue-photo { width:100%; aspect-ratio:16/9; display:block; object-fit:cover; background:#05070a; border-bottom:1px solid rgba(132,158,186,.16); }
+    .venue-card--feature { grid-column:1 / -1; display:grid; grid-template-columns:minmax(290px,.72fr) minmax(0,1.28fr); align-items:stretch; }
+    .venue-card--feature figure { position:relative; min-height:560px; background:#05070a; overflow:hidden; }
+    .venue-card--feature .venue-photo { width:100%; height:100%; min-height:560px; aspect-ratio:auto; object-fit:cover; object-position:center 43%; border-bottom:0; border-right:1px solid rgba(132,158,186,.16); }
+    .venue-card--feature .photo-credit { position:absolute; left:0; right:0; bottom:0; padding:18px 16px 12px; background:linear-gradient(transparent,rgba(0,0,0,.82)); color:rgba(255,255,255,.78); }
+    .venue-card--feature .venue-body { display:flex; flex-direction:column; justify-content:center; padding:38px 42px; }
+    .venue-card--feature .venue-body h3 { font-size:clamp(2rem,4vw,3.6rem); letter-spacing:-.035em; margin:8px 0 16px; }
+    .venue-card--feature .venue-body p { font-size:1.02rem; max-width:760px; }
     .venue-body { padding:25px 27px 27px; }
     .venue-body h3 { margin:4px 0 10px; }
     .venue-body p { margin:.65em 0; }
@@ -34,7 +42,13 @@
     .archive-note { color:var(--muted); font-size:.9rem; }
     .text-venue { min-height:260px; display:flex; flex-direction:column; justify-content:center; }
     .text-venue .venue-mark { color:var(--accent); font-size:clamp(2.2rem,5vw,4.2rem); font-weight:900; line-height:.95; letter-spacing:-.045em; }
-    @media (max-width:780px) { .venue-grid,.award-grid { grid-template-columns:1fr; } }
+    @media (max-width:780px) {
+      .venue-grid,.award-grid { grid-template-columns:1fr; }
+      .venue-card--feature { grid-column:auto; grid-template-columns:1fr; }
+      .venue-card--feature figure { min-height:0; }
+      .venue-card--feature .venue-photo { height:auto; min-height:0; aspect-ratio:auto; object-fit:contain; border-right:0; border-bottom:1px solid rgba(132,158,186,.16); }
+      .venue-card--feature .venue-body { padding:26px 27px 29px; }
+    }
   </style>
 </head>
 <body>
@@ -70,20 +84,20 @@
   <p class="lead">Roughly a year, usually a little more, in each place. Some survive under the same name, some evolved, and some now exist mainly in archives.</p>
 
   <div class="venue-grid">
-    <article class="card venue-card">
+    <article class="card venue-card venue-card--feature">
       <figure>
-        <img class="venue-photo" src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Crowne_Plaza%2C_Christchurch_40.JPG?width=1400" alt="Former Parkroyal Hotel building in Christchurch, later known as Crowne Plaza" loading="lazy" decoding="async">
-        <figcaption class="photo-credit">Former Parkroyal building, later Crowne Plaza. Wikimedia Commons source linked below.</figcaption>
+        <img class="venue-photo" src="https://i.pinimg.com/564x/82/e2/29/82e229c8bfa07edaaaa507e429a614b9.jpg" alt="Parkroyal Hotel overlooking the flower gardens in Victoria Square, Christchurch" loading="eager" decoding="async">
+        <figcaption class="photo-credit">Parkroyal Hotel overlooking Victoria Square, Christchurch. Image supplied by David Ruck.</figcaption>
       </figure>
       <div class="venue-body">
         <div class="venue-meta">Christchurch · hotel kitchen</div>
         <h3>Parkroyal Hotel</h3>
         <p>The Parkroyal on Victoria Square was Christchurch’s first five-star hotel. Its hospitality operation included multiple restaurants and bars, including Canterbury Tales and Yamagen, and the hotel archives preserve photographs of the kitchens, chefs and dining rooms.</p>
-        <p>The building later became the Crowne Plaza and was demolished after the Canterbury earthquakes.</p>
+        <p>The hotel was a substantial part of the Christchurch hospitality landscape I entered as a young chef. The building later became the Crowne Plaza and was demolished after the Canterbury earthquakes.</p>
         <div class="venue-links">
           <a href="https://archives.canterburystories.nz/repositories/3/archival_objects/1507" target="_blank" rel="noopener noreferrer">Christchurch archives ↗</a>
           <a href="https://natlib.govt.nz/records/20524155" target="_blank" rel="noopener noreferrer">1988 five-star reference ↗</a>
-          <a href="https://commons.wikimedia.org/wiki/File:Crowne_Plaza,_Christchurch_40.JPG" target="_blank" rel="noopener noreferrer">Photo source ↗</a>
+          <a href="https://my.christchurchcitylibraries.com/blogs/post/photo-hunt-october-park-royal-hotel-1996/" target="_blank" rel="noopener noreferrer">Christchurch City Libraries ↗</a>
         </div>
       </div>
     </article>
