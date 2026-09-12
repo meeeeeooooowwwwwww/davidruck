@@ -3,13 +3,14 @@ const RUMBLE_VIDEO_URL = 'https://rumble.com/v6zh68m-selfie-the-chainsmokers.htm
 // Global site chrome. These are the single source of truth for every HTML page.
 // Keep the public-facing navigation professional-first while giving major
 // long-form chapters stable homes of their own.
-const GLOBAL_HEADER = `<nav class="nav" aria-label="Primary navigation"><a class="brand" href="/" aria-label="David Ruck home">David Ruck</a><div class="nav-links"><a href="/about/">About</a><a href="/career/">Career</a><a href="/career/0199/">0199</a><a href="/media/">Media</a><a href="/music/">Music</a><a href="/digital/">Digital</a><a href="/grid-eater/">GRID EATER</a><a href="/contact/">Contact</a></div></nav>`;
+const GLOBAL_NAV_LINKS = `<a href="/about/">About</a><a href="/career/">Career</a><a href="/career/0199/">0199</a><a href="/media/">Media</a><a href="/music/">Music</a><a href="/digital/">Digital</a><a href="/grid-eater/">GRID EATER</a><a href="/contact/">Contact</a>`;
+const GLOBAL_HEADER = `<nav class="nav" aria-label="Primary navigation"><a class="brand" href="/" aria-label="David Ruck home">David Ruck</a><div class="nav-links">${GLOBAL_NAV_LINKS}</div><details class="mobile-nav"><summary aria-label="Open navigation menu"><span class="mobile-nav-icon" aria-hidden="true"><i></i><i></i><i></i></span><span class="mobile-nav-label">MENU</span></summary><div class="mobile-nav-panel">${GLOBAL_NAV_LINKS}</div></details></nav>`;
 
 const GLOBAL_FOOTER = `<div class="footer-copy"><strong>David Ruck</strong><br><span>© 2026 · Christchurch, New Zealand · davidaruck.com</span></div><div class="footer-social" aria-label="David Ruck social profiles"><a class="social-link" href="https://substack.com/@davidruck" target="_blank" rel="me noopener"><img src="/assets/icons/substack.svg" alt="" width="22" height="22"><span>Substack</span></a><a class="social-link" href="https://www.linkedin.com/in/davidaruck/" target="_blank" rel="me noopener"><img src="/assets/icons/linkedin.svg" alt="" width="22" height="22"><span>LinkedIn</span></a><a class="social-link" href="https://www.youtube.com/@AmericaFirstNZ" target="_blank" rel="me noopener"><img src="/assets/icons/youtube.svg" alt="" width="22" height="22"><span>YouTube</span></a><a class="social-link" href="https://rumble.com/user/NatalieGWinters" target="_blank" rel="me noopener"><img src="/assets/icons/rumble.svg" alt="" width="22" height="22"><span>Rumble</span></a></div><div class="footer-sites"><a href="https://grideater.com" target="_blank" rel="noopener">GRID EATER</a><span>·</span><a href="https://americafirst.co.nz" target="_blank" rel="noopener">America First Ltd</a><span>·</span><a href="https://nataliegwinters.com" target="_blank" rel="noopener">Natalie G. Winters</a></div>`;
 
 class GlobalThemeHandler {
   element(element) {
-    element.append('<meta name="referrer" content="strict-origin-when-cross-origin"><link rel="stylesheet" href="/assets/aurora-theme.css">', { html: true });
+    element.append('<meta name="referrer" content="strict-origin-when-cross-origin"><link rel="stylesheet" href="/assets/aurora-theme.css"><link rel="stylesheet" href="/assets/mobile-nav.css">', { html: true });
   }
 }
 
