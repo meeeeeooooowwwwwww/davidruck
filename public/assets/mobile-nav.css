@@ -1,0 +1,124 @@
+/* Sitewide mobile navigation. Desktop nav remains unchanged. */
+.mobile-nav{
+  display:none;
+}
+
+@media (max-width:760px){
+  .nav{
+    position:relative;
+    min-height:58px;
+    padding:10px 16px;
+    gap:14px;
+  }
+
+  .brand{
+    flex:1 1 auto;
+    min-width:0;
+  }
+
+  .nav-links{
+    display:none!important;
+  }
+
+  .mobile-nav{
+    display:block;
+    position:relative;
+    flex:0 0 auto;
+  }
+
+  .mobile-nav summary{
+    min-width:78px;
+    height:38px;
+    padding:0 11px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    border:1px solid rgba(111,220,255,.22);
+    border-radius:9px;
+    background:rgba(8,12,17,.88);
+    color:#dce7ef;
+    cursor:pointer;
+    list-style:none;
+    user-select:none;
+  }
+
+  .mobile-nav summary::-webkit-details-marker{
+    display:none;
+  }
+
+  .mobile-nav summary:focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+  }
+
+  .mobile-nav-label{
+    font-size:.68rem;
+    font-weight:800;
+    letter-spacing:.12em;
+  }
+
+  .mobile-nav-icon{
+    width:17px;
+    height:13px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+
+  .mobile-nav-icon i{
+    display:block;
+    width:100%;
+    height:1.5px;
+    border-radius:999px;
+    background:var(--accent);
+    transform-origin:center;
+    transition:transform .18s ease,opacity .18s ease;
+  }
+
+  .mobile-nav[open] .mobile-nav-icon i:nth-child(1){
+    transform:translateY(5.75px) rotate(45deg);
+  }
+
+  .mobile-nav[open] .mobile-nav-icon i:nth-child(2){
+    opacity:0;
+  }
+
+  .mobile-nav[open] .mobile-nav-icon i:nth-child(3){
+    transform:translateY(-5.75px) rotate(-45deg);
+  }
+
+  .mobile-nav-panel{
+    position:absolute;
+    top:calc(100% + 10px);
+    right:0;
+    width:min(290px,calc(100vw - 32px));
+    padding:8px;
+    display:grid;
+    border:1px solid rgba(111,220,255,.18);
+    border-radius:12px;
+    background:rgba(5,8,12,.98);
+    box-shadow:0 22px 55px rgba(0,0,0,.55);
+    -webkit-backdrop-filter:blur(14px);
+    backdrop-filter:blur(14px);
+  }
+
+  .mobile-nav-panel a{
+    padding:11px 12px;
+    border-radius:7px;
+    color:#b9c5d0;
+    font-size:.86rem;
+    text-decoration:none;
+    transition:background .15s ease,color .15s ease;
+  }
+
+  .mobile-nav-panel a:hover,
+  .mobile-nav-panel a:focus-visible{
+    background:rgba(111,220,255,.07);
+    color:#fff;
+  }
+
+  .mobile-nav-panel a + a{
+    border-top:1px solid rgba(142,167,194,.09);
+  }
+}
