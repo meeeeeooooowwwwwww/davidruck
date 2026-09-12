@@ -10,7 +10,7 @@ const GLOBAL_FOOTER = `<div class="footer-copy"><strong>David Ruck</strong><br><
 
 class GlobalThemeHandler {
   element(element) {
-    element.append('<meta name="referrer" content="strict-origin-when-cross-origin"><link rel="stylesheet" href="/assets/aurora-theme.css"><link rel="stylesheet" href="/assets/mobile-nav.css">', { html: true });
+    element.append('<meta name="referrer" content="strict-origin-when-cross-origin"><link rel="stylesheet" href="/assets/aurora-theme.css"><link rel="stylesheet" href="/assets/mobile-nav.css?v=20260912-3">', { html: true });
   }
 }
 
