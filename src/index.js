@@ -1,3 +1,5 @@
+import { applyChapterEnhancements } from './chapter-enhancements.js';
+
 const RUMBLE_VIDEO_URL = 'https://rumble.com/v6zh68m-selfie-the-chainsmokers.html';
 
 // Global site chrome. These are the single source of truth for every HTML page.
@@ -10,7 +12,7 @@ const GLOBAL_FOOTER = `<div class="footer-copy"><strong>David Ruck</strong><br><
 
 class GlobalThemeHandler {
   element(element) {
-    element.append('<meta name="referrer" content="strict-origin-when-cross-origin"><link rel="stylesheet" href="/assets/aurora-theme.css"><link rel="stylesheet" href="/assets/mobile-nav.css?v=20260912-3">', { html: true });
+    element.append('<meta name="referrer" content="strict-origin-when-cross-origin"><link rel="stylesheet" href="/assets/aurora-theme.css"><link rel="stylesheet" href="/assets/mobile-nav.css?v=20260912-3"><link rel="stylesheet" href="/assets/chapter-enhancements.css?v=20260913-1">', { html: true });
   }
 }
 
@@ -151,6 +153,8 @@ export default {
       .on('a[target="_blank"]', new ExternalReferralLinkHandler())
       .on('.prose a[href="/my-sister/"]', new DeniseStoryLinkHandler())
       .on('.prose a[href="/my-sister/"] strong', new DeniseStoryLabelHandler());
+
+    rewriter = applyChapterEnhancements(rewriter, pathname);
 
     // Professional pages keep the first-person voice, but restore clear visible
     // third-person entity signals for exact-name searches such as "David Ruck".
