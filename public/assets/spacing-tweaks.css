@@ -1,0 +1,76 @@
+/* Site-wide vertical rhythm refinement. Keep breathing room without oversized gaps. */
+
+.section {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.page-head {
+  padding-top: 64px;
+  padding-bottom: 34px;
+}
+
+.prose p {
+  margin-bottom: .78em;
+}
+
+.prose h2 {
+  margin-top: 1.55em;
+  margin-bottom: 16px;
+}
+
+.prose h3 {
+  margin-top: 1.4em;
+  margin-bottom: 10px;
+}
+
+.prose > h2:first-child,
+.prose > h3:first-child {
+  margin-top: 0;
+}
+
+.note,
+.fact-box,
+.source-note {
+  margin-top: 22px;
+  margin-bottom: 22px;
+}
+
+.through-line {
+  margin-top: 24px;
+}
+
+.story-photo {
+  margin-top: 24px;
+  margin-bottom: 26px;
+}
+
+.history-evidence {
+  padding-top: 28px;
+  padding-bottom: 30px;
+}
+
+.history-evidence + .section,
+.history-timeline + .section {
+  padding-top: 44px;
+}
+
+@media (max-width: 760px) {
+  .section {
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+
+  .page-head {
+    padding-top: 48px;
+    padding-bottom: 28px;
+  }
+
+  .prose p {
+    margin-bottom: .72em;
+  }
+
+  .prose h2 {
+    margin-top: 1.4em;
+  }
+}
