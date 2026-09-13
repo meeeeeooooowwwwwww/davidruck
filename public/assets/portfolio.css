@@ -84,11 +84,20 @@
   box-shadow: 0 14px 38px rgba(0,0,0,.28);
 }
 
-.media-embed iframe {
+.media-embed iframe,
+.media-embed img {
   display: block;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  height: auto;
   border: 0;
+}
+
+.media-embed iframe {
+  aspect-ratio: 16 / 9;
+}
+
+.story-photo {
+  margin: 28px 0 32px;
 }
 
 .media-caption {
@@ -150,5 +159,9 @@
   .through-line,
   .media-feature {
     padding: 20px;
+  }
+
+  .story-photo {
+    margin: 22px 0 26px;
   }
 }
