@@ -27,7 +27,7 @@ const CHAPTERS = {
     date: 'c. 2007–2009',
     references: [
       { brand: 'HRV', label: 'HRV New Zealand', href: 'https://www.hrv.co.nz/', detail: 'Official HRV New Zealand site.' },
-      { brand: 'Deloitte', label: 'Deloitte Fast 50', href: 'https://www.deloitte.com/nz/en/services/deloitte-private/services/fast-50-index-deloitte-fast-50.html', detail: 'Official Fast 50 index and programme archive.' }
+      { brand: 'Deloitte', label: 'Deloitte Fast 50', href: 'https://www.deloitte.com/nz/en/services/deloitte-private/services/fast-50-index-deloitte-fast-50.html', detail: 'Official Fast 50 index and programme archive.', logo: 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Logo_of_Deloitte.svg' }
     ]
   },
   '/media/alt-tv': {
@@ -47,7 +47,7 @@ const CHAPTERS = {
     date: 'c. 2008–2009',
     references: [
       { brand: 'Counter-Strike', label: 'Counter-Strike', href: 'https://www.counter-strike.net/', detail: 'One of the games I remember dominating the centre.' },
-      { brand: 'World of Warcraft', label: 'World of Warcraft', href: 'https://worldofwarcraft.blizzard.com/', detail: 'Another major part of the gaming-centre crowd.' },
+      { brand: 'World of Warcraft', label: 'World of Warcraft', href: 'https://worldofwarcraft.blizzard.com/en-us/', detail: 'Another major part of the gaming-centre crowd.' },
       { brand: 'IMVU', label: 'IMVU', href: 'https://www.imvu.com/', detail: 'The online community experience I brought into the chapter.' }
     ]
   },
