@@ -1,6 +1,22 @@
 import { applyChapterEnhancements } from './chapter-enhancements.js';
 
 const RUMBLE_VIDEO_URL = 'https://rumble.com/v6zh68m-selfie-the-chainsmokers.html';
+const ALT_TV_SHELLEY_VIDEO = `<div class="through-line">
+  <div class="eyebrow">Shelley Meecham · The Almighty Johnsons · 2011</div>
+  <h2>Vodka Girl #1</h2>
+  <p>The episode starts at <strong>2:28</strong>, where Shelley appears as Vodka Girl #1.</p>
+  <div style="width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:14px;background:#000;margin:1.25rem 0;">
+    <iframe
+      src="https://www.youtube.com/embed/0t8eBkZvXh4?start=148&amp;rel=0"
+      title="The Almighty Johnsons - Shelley Meecham scene"
+      style="width:100%;height:100%;border:0;display:block;"
+      loading="eager"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allowfullscreen></iframe>
+  </div>
+  <p><a href="https://www.youtube.com/watch?v=0t8eBkZvXh4&amp;t=148s" target="_blank" rel="noopener"><strong>Open episode on YouTube at Shelley’s scene ↗</strong></a></p>
+</div>`;
 
 // Global site chrome. These are the single source of truth for every HTML page.
 // Keep the public-facing navigation professional-first while giving major
@@ -58,6 +74,27 @@ class TextContentHandler {
 
   element(element) {
     element.setInnerContent(this.content, { html: this.html });
+  }
+}
+
+class AltTvTopContentHandler {
+  constructor() {
+    this.position = 0;
+  }
+
+  element(element) {
+    this.position += 1;
+
+    // Remove the two opening Compass/HRV sections: h2+p+p + h2+p+p.
+    if (this.position <= 6) {
+      element.remove();
+      return;
+    }
+
+    // Insert the Shelley episode immediately before the wider ALT TV / George FM section.
+    if (this.position === 7) {
+      element.before(ALT_TV_SHELLEY_VIDEO, { html: true });
+    }
   }
 }
 
@@ -155,6 +192,10 @@ export default {
       .on('.prose a[href="/my-sister/"] strong', new DeniseStoryLabelHandler());
 
     rewriter = applyChapterEnhancements(rewriter, pathname);
+
+    if (pathname === '/media/alt-tv') {
+      rewriter = rewriter.on('.section.prose.wide-prose > *', new AltTvTopContentHandler());
+    }
 
     // Professional pages keep the first-person voice, but restore clear visible
     // third-person entity signals for exact-name searches such as "David Ruck".
