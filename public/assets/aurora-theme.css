@@ -1,0 +1,38 @@
+/* Global spacing rhythm overrides for davidruck.com.
+   Loaded after page-specific styles by the Worker so spacing stays consistent site-wide. */
+
+.page-head {
+  padding: 62px 0 30px;
+}
+
+.section {
+  padding: 48px 0;
+}
+
+.prose h2 {
+  margin-top: 1.45em;
+}
+
+.prose h3 {
+  margin-top: 1.45em;
+}
+
+.section.prose > h2:first-child,
+.section.prose > h3:first-child {
+  margin-top: 0;
+}
+
+@media (max-width: 760px) {
+  .page-head {
+    padding: 46px 0 24px;
+  }
+
+  .section {
+    padding: 38px 0;
+  }
+
+  .prose h2,
+  .prose h3 {
+    margin-top: 1.3em;
+  }
+}
