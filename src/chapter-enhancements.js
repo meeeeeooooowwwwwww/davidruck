@@ -12,7 +12,7 @@ const CHAPTERS = {
   '/career/hotel-dynamics': {
     date: 'c. 2005–2006',
     references: [
-      { brand: 'Hilton', label: 'Hilton Hotels & Resorts', href: 'https://www.hilton.com/', detail: 'One of the hotel brands connected to the membership programmes.', logo: 'https://upload.wikimedia.org/wikipedia/commons/3/39/HiltonHotelsLogo.svg' },
+      { brand: 'Hilton', label: 'Hilton Hotels & Resorts', href: 'https://www.hilton.com/', detail: 'One of the hotel brands connected to the membership programmes.' },
       { brand: 'Millennium', label: 'Millennium Hotels & Resorts', href: 'https://www.millenniumhotels.com/en/', detail: 'Official hotel-group site covering Millennium, Copthorne and Kingsgate.' }
     ]
   },
@@ -27,7 +27,7 @@ const CHAPTERS = {
     date: 'c. 2007–2009',
     references: [
       { brand: 'HRV', label: 'HRV New Zealand', href: 'https://www.hrv.co.nz/', detail: 'Official HRV New Zealand site.' },
-      { brand: 'Deloitte', label: 'Deloitte Fast 50', href: 'https://www.deloitte.com/nz/en/services/deloitte-private/services/fast-50-index-deloitte-fast-50.html', detail: 'Official Fast 50 index and programme archive.', logo: 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Logo_of_Deloitte.svg' }
+      { brand: 'Deloitte', label: 'Deloitte Fast 50', href: 'https://www.deloitte.com/nz/en/services/deloitte-private/services/fast-50-index-deloitte-fast-50.html', detail: 'Official Fast 50 index and programme archive.' }
     ]
   },
   '/media/alt-tv': {
@@ -35,13 +35,7 @@ const CHAPTERS = {
     references: [
       { brand: 'ALT TV', label: 'ALT TV · National Library', href: 'https://natlib.govt.nz/records/22571219', detail: 'National Library record: ALT TV aired nationally during 2006–2009.' },
       { brand: 'George FM', label: 'George FM', href: 'https://www.georgefm.co.nz/', detail: 'The Auckland dance-music station co-founded by Thane Kirby.' }
-    ],
-    image: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/a/a3/Auckland_Karangahape_Road.jpg',
-      href: 'https://commons.wikimedia.org/wiki/File:Auckland_Karangahape_Road.jpg',
-      alt: 'Karangahape Road in Auckland photographed in 2006',
-      caption: 'Karangahape Road, Auckland, photographed in 2006. Context image, not the specific nightclub. Public-domain image via Wikimedia Commons.'
-    }
+    ]
   },
   '/career/red-vs-blue': {
     date: 'c. 2008–2009',
@@ -82,13 +76,7 @@ const CHAPTERS = {
       { brand: '0199', label: '0199 Limited · company record', href: 'https://www.nzlbusiness.com/company/struck-off/01992012-Limited', detail: 'Public record showing incorporation in Wellington in February 2012.' },
       { brand: 'NZ Gazette', label: 'New Zealand Gazette record', href: 'https://gazette.govt.nz/notice/id/2013-ds2224', detail: 'Official government company notice.' },
       { brand: 'NZ History', label: 'Christchurch earthquake · 2011', href: 'https://nzhistory.govt.nz/page/christchurch-earthquake-kills-185', detail: 'Context for the move out of Christchurch before the Wellington operation.' }
-    ],
-    image: {
-      src: 'https://upload.wikimedia.org/wikipedia/commons/1/17/Wellington_waterfront_-_Paul_Moss.jpg',
-      href: 'https://commons.wikimedia.org/wiki/File:Wellington_waterfront_-_Paul_Moss.jpg',
-      alt: 'Wellington waterfront',
-      caption: 'Wellington, where the 0199 call-centre operation took shape after the Christchurch move. Context image, not the office itself. Public-domain image via Wikimedia Commons.'
-    }
+    ]
   },
   '/career/real-websites': {
     date: '2013–c. 2016',
