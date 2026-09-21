@@ -58,17 +58,17 @@ The homepage does not load a YouTube player until the visitor requests it, and t
 
 Pull requests run validation only. Production deployment happens only from `main`.
 
-The pipeline installs with `npm ci`, runs the regression audit, syntax-checks authored JavaScript, performs a Wrangler dry run, optimises large JPEG/PNG media in the deployment workspace, and deploys with one scoped `CLOUDFLARE_API_TOKEN`.
+The pipeline installs with `npm ci`, runs the regression audit, syntax-checks authored JavaScript, performs a Wrangler dry run, and deploys with one scoped `CLOUDFLARE_API_TOKEN`.
 
 Global Cloudflare API-key fallbacks are intentionally not supported.
 
-The original high-resolution raster files remain in the repository as source material. Production CI strips metadata and compresses files larger than 500 KB before upload.
+Large raster source media is optimised before it is committed. Production deployment does not mutate source files, which keeps builds reproducible and easier to review.
 
 ## Regression audit
 
 Run `npm run audit`.
 
-The audit checks every HTML page for exactly one shared stylesheet, canonical empty header/footer placeholders, retired stylesheet references, inline style blocks, AdSense, an eager homepage YouTube embed, and homepage brand-image hotlinks.
+The audit checks every HTML page for exactly one shared stylesheet, canonical empty header/footer placeholders, retired stylesheet references, inline style blocks, AdSense, an eager homepage YouTube embed, homepage brand-image hotlinks, and unexpectedly large raster media.
 
 ## Information architecture
 
