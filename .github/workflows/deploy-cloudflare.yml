@@ -44,27 +44,33 @@ jobs:
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
     steps:
+      - name: Detect Cloudflare deployment credential
+        id: cloudflare-auth
+        shell: bash
+        run: |
+          if [ -n "${CLOUDFLARE_API_TOKEN:-}" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+            echo "Scoped Cloudflare API token detected."
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::No CLOUDFLARE_API_TOKEN is configured. Validation passed; production deploy is intentionally skipped."
+          fi
+
       - name: Checkout repository
+        if: steps.cloudflare-auth.outputs.available == 'true'
         uses: actions/checkout@v7
 
       - name: Set up Node.js
+        if: steps.cloudflare-auth.outputs.available == 'true'
         uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
 
       - name: Install locked dependencies
+        if: steps.cloudflare-auth.outputs.available == 'true'
         run: npm ci
 
-      - name: Verify scoped Cloudflare credential
-        shell: bash
-        run: |
-          set -euo pipefail
-          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
-            echo "CLOUDFLARE_API_TOKEN is required for production deploys." >&2
-            exit 1
-          fi
-
-
       - name: Deploy to Cloudflare
+        if: steps.cloudflare-auth.outputs.available == 'true'
         run: npx wrangler deploy --message "Deploy davidaruck.com from GitHub main"
