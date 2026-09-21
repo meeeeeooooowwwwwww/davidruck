@@ -34,5 +34,10 @@ function initYouTubeFacades() {
   });
 }
 
-initAnalytics();
 initYouTubeFacades();
+
+if ('requestIdleCallback' in window) {
+  window.requestIdleCallback(initAnalytics, { timeout: 2500 });
+} else {
+  window.setTimeout(initAnalytics, 1200);
+}
