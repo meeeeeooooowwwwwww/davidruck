@@ -1,38 +1,80 @@
 # davidaruck.com
 
-Official personal website for David Ruck, deployed as a Cloudflare Workers static-assets project.
+Official personal and professional website for David Ruck, deployed as a lean Cloudflare Workers static-assets project.
 
 ## Production
 
 - Domain: https://davidaruck.com
 - Worker: `davidaruck-site`
-- Cloudflare account: existing production account configured by the owner
-- Static assets: `./public`
+- Static content: `./public`
+- Worker composition and redirects: `./src`
+- Runtime framework: none
+- Browser dependencies: none
 
-## Deploy
+The site deliberately favours static HTML, one shared CSS file and a very small amount of first-party JavaScript over a client-side framework.
+
+## Local development
+
+Use the locked dependency graph:
 
 ```bash
-npm install
-npx wrangler deploy
+npm ci
+npm run check
+npm run dev
 ```
 
-Wrangler will deploy the existing custom-domain routes defined in `wrangler.jsonc`.
+Production deploys are handled by GitHub Actions after validation passes on `main`.
 
-## Global header and footer
+## Architecture
 
-The site header and footer are global server-side components defined in `src/index.js` as `GLOBAL_HEADER` and `GLOBAL_FOOTER`.
+### Static pages
 
-They use the professional homepage navigation and the full homepage footer as the single source of truth for all HTML pages. Do not maintain page-specific header or footer variants. When the site-wide header or footer changes, update the global component once in `src/index.js`.
+All public pages live under `public/`. Each HTML document contains its page-specific metadata and content, plus empty canonical header and footer placeholders.
 
-`wrangler.jsonc` routes HTML/page paths through the Worker so `HTMLRewriter` applies the global components. Static assets such as CSS, icons and images are not deliberately routed through the Worker.
+The Cloudflare Worker fills those placeholders from the single global definitions in `src/index.js`. Do not copy site-wide navigation or footer markup into individual pages.
+
+### CSS
+
+All authored site styling is consolidated in `public/assets/styles.css`.
+
+Avoid adding page-local `<style>` blocks or new override stylesheets unless there is a strong architectural reason. The CI audit rejects the retired CSS-module pattern.
+
+### JavaScript
+
+`public/assets/site.js` contains only shared progressive enhancement:
+
+- production Google Analytics loading;
+- the click-to-load YouTube facade.
+
+The homepage does not load a YouTube player until the visitor requests it, and the professional site does not load AdSense.
+
+### Worker
+
+`src/index.js` handles canonical site chrome, legacy redirects, the small Rumble oEmbed endpoint used by the deeper personal-history page, and targeted professional-page copy normalisation.
+
+`src/chapter-enhancements.js` renders chronology and reference cards without remote image hotlinks.
+
+## CI and deployment
+
+Pull requests run validation only. Production deployment happens only from `main`.
+
+The pipeline installs with `npm ci`, runs the regression audit, syntax-checks authored JavaScript, performs a Wrangler dry run, and deploys with one scoped `CLOUDFLARE_API_TOKEN`.
+
+Global Cloudflare API-key fallbacks are intentionally not supported.
+
+Large raster source media is optimised before it is committed. Production deployment does not mutate source files, which keeps builds reproducible and easier to review.
+
+## Regression audit
+
+Run `npm run audit`.
+
+The audit checks every HTML page for exactly one shared stylesheet, canonical empty header/footer placeholders, retired stylesheet references, inline style blocks, AdSense, an eager homepage YouTube embed, homepage brand-image hotlinks, and unexpectedly large raster media.
 
 ## Information architecture
 
-The public-facing site is intentionally professional-first. Primary navigation should contain only About, 0199, Career, Digital, Media, GRID EATER and Contact.
+The public-facing site is professional-first. Primary navigation contains About, Career, 0199, Media, Music, Digital, GRID EATER and Contact.
 
-`/my-account/` is a deeper long-form personal/public-history record and must not be placed in the primary navigation or promoted from the homepage. It is deliberately reached through a subtle link near the bottom of the About page.
-
-Personal subsections belong beneath `/my-account/`. The Denise Ruck subsection lives at `/my-account/denise-ruck/`; the legacy `/my-sister/` path redirects there and should not be restored as a standalone top-level section.
+`/my-account/` is a deeper long-form personal/public-history record and is intentionally absent from primary navigation. Personal subsections belong beneath `/my-account/`; the legacy `/my-sister/` path redirects to `/my-account/denise-ruck/`.
 
 ## Content policy
 
@@ -40,8 +82,6 @@ The `/my-account/` page and its subsections are intentionally first-person prima
 
 ## SEO
 
-The site includes canonical URLs, Person/ProfilePage structured data, `sameAs` social identity links, sitemap, robots.txt, llms.txt and first-person biography/history content.
+The site includes canonical URLs, Person/ProfilePage structured data, `sameAs` identity links, sitemap, robots.txt, llms.txt and first-person biography/history content.
 
-For exact-name searches such as `David Ruck`, the professional pages must also retain clear visible entity signals. Keep the global homepage link labelled `David Ruck`, keep `David Ruck` in the homepage H1 and core professional metadata, and use a natural third-person `David Ruck` identifier in the opening copy/headings of the main professional pages before continuing in first person. Do not keyword-stuff the name.
-
-The long-form `/my-account/` page remains first person. Its rendered contemporary-record block is intentionally controlled in `src/index.js`; do not restore the removed NZ Herald outbound reference there. General professional searches and AI summaries should prioritise the professional pages; deeper personal-history material is secondary context.
+For exact-name searches such as `David Ruck`, the professional pages retain clear visible entity signals without keyword stuffing. The long-form `/my-account/` record remains secondary context rather than primary professional biography.
