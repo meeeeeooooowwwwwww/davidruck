@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - professionalisation-20260921
+    paths:
+      - .github/workflows/optimise-source-media.yml
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   optimise:
@@ -25,9 +27,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          file public/media/pulzarfm/dj-ruckus.png public/media/pulzarfm/studio-party.jpg
-          identify public/media/pulzarfm/dj-ruckus.png public/media/pulzarfm/studio-party.jpg
-
           jpg_tmp="public/media/pulzarfm/studio-party.optimised.jpg"
           convert public/media/pulzarfm/studio-party.jpg -auto-orient -strip -interlace Plane -quality 82 "$jpg_tmp"
           mv "$jpg_tmp" public/media/pulzarfm/studio-party.jpg
@@ -39,11 +38,12 @@ jobs:
           file public/media/pulzarfm/dj-ruckus.png public/media/pulzarfm/studio-party.jpg
           du -h public/media/pulzarfm/dj-ruckus.png public/media/pulzarfm/studio-party.jpg
 
-      - name: Upload optimised media
-        uses: actions/upload-artifact@v4
-        with:
-          name: optimised-pulzarfm-media
-          path: |
-            public/media/pulzarfm/dj-ruckus.png
-            public/media/pulzarfm/studio-party.jpg
-          if-no-files-found: error
+      - name: Commit optimised media
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/media/pulzarfm/dj-ruckus.png public/media/pulzarfm/studio-party.jpg
+          git commit -m "Optimise PulzarFM source media"
+          git push origin HEAD:professionalisation-20260921
