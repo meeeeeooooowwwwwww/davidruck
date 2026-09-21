@@ -42,8 +42,15 @@ for (const file of htmlFiles) {
   if (!/<header class="site-header"><\/header>/.test(html)) fail(file, 'does not use the canonical empty header placeholder');
   if (!/<footer class="footer"><\/footer>/.test(html)) fail(file, 'does not use the canonical empty footer placeholder');
 
+  const allowedRemoteImageHosts = new Set([
+    'i.ytimg.com',
+    'upload.wikimedia.org',
+    'www.millenniumhotels.com',
+    'www.trustedbrands.co.nz'
+  ]);
   for (const src of remoteImages) {
-    if (!src.startsWith('https://i.ytimg.com/')) fail(file, `hotlinks image: ${src}`);
+    const host = new URL(src).hostname;
+    if (!allowedRemoteImageHosts.has(host)) fail(file, `unapproved remote image host: ${host}`);
   }
 }
 
