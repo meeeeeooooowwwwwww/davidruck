@@ -25,14 +25,33 @@ function handleLegacyFragments() {
   if (destination) location.replace(destination);
 }
 
+function getYouTubeId(element) {
+  const scope = element.closest('[data-youtube-id]');
+  const videoId = scope?.dataset.youtubeId || '';
+  return /^[\w-]{11}$/.test(videoId) ? videoId : null;
+}
+
 function initYouTubeFacades() {
+  for (const scope of document.querySelectorAll('[data-youtube-id]')) {
+    const videoId = getYouTubeId(scope);
+    if (!videoId) continue;
+
+    for (const image of scope.querySelectorAll('[data-youtube-thumbnail]')) {
+      image.src = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+    }
+
+    for (const link of scope.querySelectorAll('[data-youtube-link]')) {
+      link.href = `https://www.youtube.com/watch?v=${videoId}`;
+    }
+  }
+
   document.addEventListener('click', (event) => {
-    const button = event.target.closest('[data-youtube-id]');
+    const button = event.target.closest('.video-facade-button');
     if (!button) return;
 
     const container = button.closest('.video-facade');
-    const videoId = button.dataset.youtubeId;
-    if (!container || !/^[\w-]{11}$/.test(videoId)) return;
+    const videoId = getYouTubeId(button);
+    if (!container || !videoId) return;
 
     const iframe = document.createElement('iframe');
     iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
