@@ -10,9 +10,9 @@ const GLOBAL_HEADER = `<nav class="nav" aria-label="Primary navigation"><a class
 
 const GLOBAL_FOOTER = `<div class="footer-copy"><strong>David Ruck</strong><br><span>© 2026 · Christchurch, New Zealand · davidaruck.com</span></div><div class="footer-social" aria-label="David Ruck social profiles"><a class="social-link" href="https://substack.com/@davidruck" target="_blank" rel="me noopener"><img src="/assets/icons/substack.svg" alt="" width="22" height="22"><span>Substack</span></a><a class="social-link" href="https://www.linkedin.com/in/davidaruck/" target="_blank" rel="me noopener"><img src="/assets/icons/linkedin.svg" alt="" width="22" height="22"><span>LinkedIn</span></a><a class="social-link" href="https://github.com/meeeeeooooowwwwwww" target="_blank" rel="me noopener"><img src="/assets/icons/github.svg" alt="" width="22" height="22"><span>GitHub</span></a><a class="social-link" href="https://www.youtube.com/@AmericaFirstNZ" target="_blank" rel="me noopener"><img src="/assets/icons/youtube.svg" alt="" width="22" height="22"><span>YouTube</span></a><a class="social-link" href="https://rumble.com/user/NatalieGWinters" target="_blank" rel="me noopener"><img src="/assets/icons/rumble.svg" alt="" width="22" height="22"><span>Rumble</span></a></div><div class="footer-sites"><a href="https://grideater.com" target="_blank" rel="noopener">GRID EATER</a><span>·</span><a href="https://americafirst.co.nz" target="_blank" rel="noopener">America First Ltd</a><span>·</span><a href="https://nataliegwinters.com" target="_blank" rel="noopener">Natalie G. Winters</a></div>`;
 
-class GlobalThemeHandler {
+class GlobalHeadHandler {
   element(element) {
-    element.append('<meta name="referrer" content="strict-origin-when-cross-origin"><link rel="stylesheet" href="/assets/aurora-theme.css"><link rel="stylesheet" href="/assets/mobile-nav.css?v=20260912-3"><link rel="stylesheet" href="/assets/chapter-enhancements.css?v=20260913-1">', { html: true });
+    element.append('<script src="/assets/site.js" defer></script>', { html: true });
   }
 }
 
@@ -147,7 +147,7 @@ export default {
     }
 
     let rewriter = new HTMLRewriter()
-      .on('head', new GlobalThemeHandler())
+      .on('head', new GlobalHeadHandler())
       .on('.site-header', new GlobalHeaderHandler())
       .on('.footer', new GlobalFooterHandler())
       .on('a[target="_blank"]', new ExternalReferralLinkHandler())
