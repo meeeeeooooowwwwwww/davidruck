@@ -23,8 +23,6 @@ npm run check
 npm run dev
 ```
 
-Production deploys are handled by GitHub Actions after validation passes on `main`.
-
 ## Architecture
 
 ### Static pages
@@ -43,22 +41,31 @@ Avoid adding page-local `<style>` blocks or new override stylesheets unless ther
 
 `public/assets/site.js` contains only shared progressive enhancement:
 
-- production Google Analytics loading;
+- production Google Analytics loading, deferred off the critical render path;
+- legacy fragment redirects for previously published media anchors;
 - the click-to-load YouTube facade.
 
 The homepage does not load a YouTube player until the visitor requests it, and the professional site does not load AdSense.
 
 ### Worker
 
-`src/index.js` handles canonical site chrome, legacy redirects, the small Rumble oEmbed endpoint used by the deeper personal-history page, and targeted professional-page copy normalisation.
+`src/index.js` handles canonical site chrome, accessibility hooks, legacy redirects, the small Rumble oEmbed endpoint used by the deeper personal-history page, and targeted professional-page copy normalisation.
 
 `src/chapter-enhancements.js` renders chronology and reference cards without remote image hotlinks.
 
 ## CI and deployment
 
-Pull requests run validation only. Production deployment happens only from `main`.
+Pull requests and pushes to `main` run the full validation suite.
 
-The pipeline installs with `npm ci`, runs the regression audit, syntax-checks authored JavaScript, performs a Wrangler dry run, and deploys with one scoped `CLOUDFLARE_API_TOKEN`.
+The pipeline installs with `npm ci`, runs the regression audit, syntax-checks authored JavaScript and performs a Wrangler dry run.
+
+If the repository has a scoped `CLOUDFLARE_API_TOKEN` secret, a successful `main` build deploys automatically. If no token is configured, deployment is deliberately skipped and CI remains green. An authenticated local Wrangler session can deploy the same validated commit with:
+
+```bash
+npm ci
+npm run check
+npm run deploy
+```
 
 Global Cloudflare API-key fallbacks are intentionally not supported.
 
@@ -68,7 +75,7 @@ Large raster source media is optimised before it is committed. Production deploy
 
 Run `npm run audit`.
 
-The audit checks every HTML page for exactly one shared stylesheet, canonical empty header/footer placeholders, retired stylesheet references, inline style blocks, AdSense, an eager homepage YouTube embed, homepage brand-image hotlinks, and unexpectedly large raster media.
+The audit checks every HTML page for exactly one shared stylesheet, canonical empty header/footer placeholders, core title/description/canonical/H1 metadata, retired stylesheet references, inline style blocks, executable inline JavaScript, AdSense, eager homepage YouTube embeds, fragile external image hotlinks and unexpectedly large raster media.
 
 ## Information architecture
 
