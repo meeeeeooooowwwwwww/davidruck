@@ -14,6 +14,17 @@ function initAnalytics() {
   window.gtag('config', 'G-KRH3H70VP9');
 }
 
+function handleLegacyFragments() {
+  if (location.pathname !== '/media/' && location.pathname !== '/media') return;
+
+  const legacy = new Map([
+    ['#production', '/music/#production'],
+    ['#pulzar-after-dark', '/media/pulzarfm/#after-dark']
+  ]);
+  const destination = legacy.get(location.hash);
+  if (destination) location.replace(destination);
+}
+
 function initYouTubeFacades() {
   document.addEventListener('click', (event) => {
     const button = event.target.closest('[data-youtube-id]');
@@ -34,6 +45,7 @@ function initYouTubeFacades() {
   });
 }
 
+handleLegacyFragments();
 initYouTubeFacades();
 
 if ('requestIdleCallback' in window) {
