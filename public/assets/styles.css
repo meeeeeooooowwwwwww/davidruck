@@ -1709,11 +1709,38 @@ h3 {
   cursor: pointer;
 }
 
-.video-facade-button img {
+.video-facade-art {
   grid-area: 1 / 1;
+  display: grid;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  place-items: end start;
+  padding: 18px;
+  background:
+    radial-gradient(circle at 22% 22%, rgba(111, 220, 255, .20), transparent 28%),
+    radial-gradient(circle at 78% 68%, rgba(170, 145, 255, .16), transparent 30%),
+    linear-gradient(135deg, #081018, #020304 64%);
+}
+
+.video-facade-art::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(111, 220, 255, .055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(111, 220, 255, .055) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(180deg, #000, transparent 90%);
+}
+
+.video-facade-art-label {
+  position: relative;
+  z-index: 1;
+  color: rgba(244, 247, 251, .72);
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
 }
 
 .video-facade-overlay {
