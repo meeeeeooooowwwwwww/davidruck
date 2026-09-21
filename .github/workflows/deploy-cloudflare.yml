@@ -30,6 +30,16 @@ jobs:
           node-version: 24
           cache: npm
 
+      - name: Regenerate portable lockfile
+        run: npm install --package-lock-only --ignore-scripts
+
+      - name: Upload regenerated lockfile
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-lock-linux
+          path: package-lock.json
+          if-no-files-found: error
+
       - name: Install locked dependencies
         run: npm ci
 
