@@ -70,10 +70,12 @@ jobs:
         run: |
           set -euo pipefail
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends jpegoptim pngquant >/dev/null
+          sudo apt-get install -y --no-install-recommends imagemagick pngquant >/dev/null
 
           while IFS= read -r -d '' file; do
-            jpegoptim --strip-all --all-progressive --max=82 "$file"
+            tmp="${file%.*}.optimised.jpg"
+            convert "$file" -auto-orient -strip -interlace Plane -quality 82 "$tmp"
+            mv "$tmp" "$file"
           done < <(find public -type f \( -iname '*.jpg' -o -iname '*.jpeg' \) -size +500k -print0)
 
           while IFS= read -r -d '' file; do
