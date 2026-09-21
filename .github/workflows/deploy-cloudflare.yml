@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: davidaruck-cloudflare-${{ github.ref }}
@@ -23,6 +23,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref || github.ref }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -39,6 +41,20 @@ jobs:
           name: package-lock-linux
           path: package-lock.json
           if-no-files-found: error
+
+      - name: Commit regenerated lockfile
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- package-lock.json; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package-lock.json
+          git commit -m "Regenerate portable package lock"
+          git push origin HEAD:${{ github.head_ref }}
 
       - name: Install locked dependencies
         run: npm ci
