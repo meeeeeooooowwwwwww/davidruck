@@ -5,9 +5,10 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "check": "wrangler deploy --dry-run --outdir .wrangler/dry-run"
+    "audit": "node scripts/audit-static.mjs",
+    "check": "npm run audit && node --check src/index.js && node --check src/chapter-enhancements.js && node --check public/assets/site.js && wrangler deploy --dry-run --outdir .wrangler/dry-run"
   },
   "devDependencies": {
-    "wrangler": "^4.0.0"
+    "wrangler": "4.131.1"
   }
 }
