@@ -35,6 +35,7 @@ for (const file of htmlFiles) {
   if (/<style\b/i.test(html)) fail(file, 'contains an inline <style> block');
   if (inlineExecutableScript) fail(file, 'contains executable inline JavaScript');
   if (/pagead2\.googlesyndication\.com/i.test(html)) fail(file, 'contains AdSense');
+  if (/https:\/\/www\.youtube\.com\/embed\//i.test(html)) fail(file, 'uses www.youtube.com for an embed; use youtube-nocookie.com to match CSP');
   if (!/<title>[^<]+<\/title>/i.test(html)) fail(file, 'missing a non-empty title');
   if (!/<meta name="description" content="[^"]+"/i.test(html)) fail(file, 'missing a meta description');
   if (!/<link rel="canonical" href="https:\/\/davidaruck\.com\//i.test(html)) fail(file, 'missing canonical davidruck.com URL');
