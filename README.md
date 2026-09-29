@@ -43,9 +43,9 @@ Avoid adding page-local `<style>` blocks or new override stylesheets unless ther
 
 - production Google Analytics loading, deferred off the critical render path;
 - legacy fragment redirects for previously published media anchors;
-- the click-to-load YouTube facade.
+- shared click-to-load YouTube facades on pages that use them.
 
-The homepage does not load a YouTube player until the visitor requests it, and the professional site does not load AdSense.
+The homepage uses the featured Rumble embed, while other pages can still use the shared click-to-load YouTube facade. The professional site does not load AdSense.
 
 ### Worker
 
@@ -75,7 +75,7 @@ Large raster source media is optimised before it is committed. Production deploy
 
 Run `npm run audit`.
 
-The audit checks every HTML page for exactly one shared stylesheet, canonical empty header/footer placeholders, core title/description/canonical/H1 metadata, retired stylesheet references, inline style blocks, executable inline JavaScript, AdSense, eager homepage YouTube embeds, fragile external image hotlinks and unexpectedly large raster media.
+The audit checks every HTML page for exactly one shared stylesheet, canonical empty header/footer placeholders, core title/description/canonical/H1 metadata, retired stylesheet references, inline style blocks, executable inline JavaScript, AdSense, the expected homepage Rumble embed, fragile external image hotlinks and unexpectedly large raster media.
 
 ## Information architecture
 
