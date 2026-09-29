@@ -58,9 +58,9 @@ for (const file of htmlFiles) {
 const homePath = path.join(PUBLIC.pathname, 'index.html');
 const home = await readFile(homePath, 'utf8');
 if (/youtube\.com\/embed/i.test(home)) fail(homePath, 'contains an eager YouTube embed');
-if (!/class="hero-video video-facade" data-youtube-id="[\w-]{11}"/.test(home)) fail(homePath, 'missing a valid click-to-load YouTube facade');
+if (!/<div class="hero-video"><iframe[^>]+src="https:\/\/rumble\.com\/embed\/v7dyjbw\/\?pub=4kxtac"[^>]*><\/iframe><\/div>/.test(home)) fail(homePath, 'missing the expected Rumble homepage embed');
 if (/pagead2\.googlesyndication\.com/i.test(home)) fail(homePath, 'homepage contains AdSense');
-if (/data-youtube-thumbnail[^>]+src=/i.test(home)) fail(homePath, 'hardcodes a YouTube thumbnail instead of deriving it from data-youtube-id');
+if (/class="hero-video video-facade"/.test(home)) fail(homePath, 'still contains the retired homepage YouTube facade');
 
 for (const file of publicFiles.filter((file) => /\.(?:png|jpe?g)$/i.test(file))) {
   const info = await stat(file);
