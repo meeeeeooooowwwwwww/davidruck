@@ -14,6 +14,48 @@ function initAnalytics() {
   window.gtag('config', 'G-KRH3H70VP9');
 }
 
+
+const THEME_STORAGE_KEY = 'davidruck-theme';
+
+function getSystemTheme() {
+  return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function setTheme(theme, persist = false) {
+  const resolved = theme === 'dark' ? 'dark' : 'light';
+  document.documentElement.dataset.theme = resolved;
+  const toggle = document.querySelector('.theme-toggle');
+  if (toggle) {
+    toggle.setAttribute('aria-pressed', String(resolved === 'dark'));
+    toggle.setAttribute('aria-label', resolved === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+  }
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  if (themeMeta) themeMeta.setAttribute('content', resolved === 'dark' ? '#171310' : '#f4efe7');
+  if (persist) {
+    try { localStorage.setItem(THEME_STORAGE_KEY, resolved); } catch {}
+  }
+}
+
+function initTheme() {
+  let saved = null;
+  try { saved = localStorage.getItem(THEME_STORAGE_KEY); } catch {}
+  setTheme(saved === 'dark' || saved === 'light' ? saved : getSystemTheme());
+
+  document.addEventListener('click', (event) => {
+    const toggle = event.target.closest('.theme-toggle');
+    if (!toggle) return;
+    const current = document.documentElement.dataset.theme || getSystemTheme();
+    setTheme(current === 'dark' ? 'light' : 'dark', true);
+  });
+
+  const media = window.matchMedia?.('(prefers-color-scheme: dark)');
+  media?.addEventListener?.('change', () => {
+    let explicit = null;
+    try { explicit = localStorage.getItem(THEME_STORAGE_KEY); } catch {}
+    if (!explicit) setTheme(getSystemTheme());
+  });
+}
+
 function handleLegacyFragments() {
   if (location.pathname !== '/media/' && location.pathname !== '/media') return;
 
@@ -37,7 +79,8 @@ function initYouTubeFacades() {
     if (!videoId) continue;
 
     for (const image of scope.querySelectorAll('[data-youtube-thumbnail]')) {
-      image.src = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+      image.src = `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
+      image.addEventListener('error', () => { image.src = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`; }, { once: true });
     }
 
     for (const link of scope.querySelectorAll('[data-youtube-link]')) {
@@ -64,6 +107,7 @@ function initYouTubeFacades() {
   });
 }
 
+initTheme();
 handleLegacyFragments();
 initYouTubeFacades();
 
