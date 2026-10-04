@@ -2638,3 +2638,65 @@ h3 { color: var(--text); }
   .home-music-links a,
   .video-facade-play { transition: none; }
 }
+
+
+/* Light/dark theme safety for legacy storytelling panels.
+   These components pre-date the 2026 warm editorial theme and originally
+   hard-coded a dark surface, which made inherited light-theme text illegible. */
+.through-line,
+.disruption-card,
+.media-feature {
+  border-color: var(--line);
+  background: var(--card-bg);
+  color: var(--text);
+  box-shadow: 0 14px 34px var(--shadow);
+}
+
+.through-line {
+  border-left-color: var(--accent);
+}
+
+.through-line h2,
+.through-line h3,
+.through-line p,
+.through-line strong,
+.disruption-card h3,
+.disruption-card p,
+.disruption-card strong,
+.media-feature-copy h2,
+.media-feature-copy h3,
+.media-feature-copy p,
+.media-feature-copy strong {
+  color: inherit;
+}
+
+.through-line .eyebrow,
+.disruption-card .kicker,
+.media-feature-copy .eyebrow,
+.media-feature-copy a {
+  color: var(--accent);
+}
+
+.disruption-card p,
+.media-feature-copy p,
+.media-feature-copy .portfolio-statline {
+  color: var(--muted);
+}
+
+.media-feature-copy .portfolio-statline strong {
+  color: var(--text);
+}
+
+:root[data-theme="dark"] .through-line,
+:root[data-theme="dark"] .disruption-card,
+:root[data-theme="dark"] .media-feature {
+  background: linear-gradient(145deg, rgba(35, 27, 22, .96), rgba(25, 19, 15, .94));
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .through-line,
+  :root:not([data-theme]) .disruption-card,
+  :root:not([data-theme]) .media-feature {
+    background: linear-gradient(145deg, rgba(35, 27, 22, .96), rgba(25, 19, 15, .94));
+  }
+}
