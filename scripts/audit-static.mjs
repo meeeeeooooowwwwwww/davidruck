@@ -57,6 +57,10 @@ if (/D\.O\.B\.|P\.O\.B\.|birthDate/i.test(home)) fail(homePath, 'homepage expose
 if (!/data-youtube-id="ElPxSbnP2Kw"/.test(home)) fail(homePath, 'homepage is missing the approved featured video facade');
 if (!/"@type":"VideoObject"/.test(home)) fail(homePath, 'homepage structured data is missing VideoObject');
 if (!/<meta name="twitter:card" content="summary_large_image">/.test(home)) fail(homePath, 'homepage is missing large-image social metadata');
+if (!home.includes('\"alternateName\":[\"David A. Ruck\",\"Dave Ruck\",\"DJ Ruckus\"]')) fail(homePath, 'David Ruck person aliases missing');
+const biography=await readFile(path.join(PUBLIC.pathname,'about/index.html'),'utf8');
+if (!biography.includes('\"@type\":\"ProfilePage\"')) fail(homePath,'About profile structured data missing');
+if (!biography.includes('Dave Ruckus') || !biography.includes('David Ruckus')) fail(homePath,'Requested search variants missing from contextual biography');
 
 const siteScriptPath = path.join(PUBLIC.pathname, 'assets', 'site.js');
 const siteScript = await readFile(siteScriptPath, 'utf8');
