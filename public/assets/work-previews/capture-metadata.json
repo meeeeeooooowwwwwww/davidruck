@@ -7,7 +7,7 @@
       "file": "public/assets/work-previews/kiwi-gardeners.jpg",
       "viewport": "1280x800",
       "screenshot": "desktop top viewport",
-      "capturedUtc": "2026-10-30T01:57:50.145Z"
+      "capturedUtc": "2026-10-30T01:59:46.722Z"
     },
     {
       "slug": "grid-eater",
@@ -16,7 +16,16 @@
       "file": "public/assets/work-previews/grid-eater.jpg",
       "viewport": "1280x800",
       "screenshot": "desktop top viewport",
-      "capturedUtc": "2026-10-30T01:57:52.926Z"
+      "capturedUtc": "2026-10-30T01:59:48.887Z"
+    },
+    {
+      "slug": "america-first-nz",
+      "url": "https://americafirst.nz/",
+      "title": "America First NZ | America First Limited — New Zealand",
+      "file": "public/assets/work-previews/america-first-nz.jpg",
+      "viewport": "1280x800",
+      "screenshot": "desktop top viewport",
+      "capturedUtc": "2026-10-30T01:59:51.297Z"
     }
   ],
   "errors": [
@@ -29,11 +38,6 @@
       "slug": "america-first-limited",
       "url": "https://americafirst.co.nz/",
       "error": "https://americafirst.co.nz/: HTTP 403"
-    },
-    {
-      "slug": "america-first-nz",
-      "url": "https://americafirst.nz/",
-      "error": "https://americafirst.nz/: expected homepage identity America First not found; got America First NZ | America First Limited — New Zealand"
     },
     {
       "slug": "david-ruck",
