@@ -2810,3 +2810,23 @@ h3 { color: var(--text); }
   .work-feature-emblem { flex-basis: 58px; width: 58px; height: 58px; padding: 7px; }
   .work-feature-role { font-size: .73rem; }
 }
+
+/* Current Work: responsive project portfolio with owned illustrative SVG covers. */
+.portfolio-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:20px;margin-top:28px}
+.portfolio-card{grid-column:span 3;display:flex;flex-direction:column;min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:16px;background:var(--card-bg);box-shadow:0 12px 30px var(--shadow)}
+.portfolio-card--featured{grid-column:span 6}
+.portfolio-card-visual{display:block;aspect-ratio:3/2;overflow:hidden;background:var(--soft)}
+.portfolio-card-visual img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .18s ease}
+.portfolio-card-visual:hover img,.portfolio-card-visual:focus-visible img{transform:scale(1.025)}
+.portfolio-card-copy{display:flex;flex-direction:column;align-items:flex-start;flex:1;min-width:0;padding:clamp(18px,2vw,28px)}
+.portfolio-card-copy h3{font:700 clamp(1.25rem,2vw,1.7rem)/1.16 Georgia,"Times New Roman",serif;margin:10px 0 12px;color:var(--text)}
+.portfolio-card-copy p{color:var(--muted);line-height:1.6;margin:0 0 18px}
+.portfolio-card-copy .kicker{font-size:.7rem;letter-spacing:.08em;color:var(--accent)}
+.portfolio-card-links{margin-top:auto;display:flex;gap:10px 20px;flex-wrap:wrap}
+.portfolio-card-links a{font-size:.88rem;font-weight:750;color:var(--accent)}
+.portfolio-note{color:var(--muted);font-size:.84rem;margin:18px 0 0;max-width:82ch}
+.portfolio-case-visual{display:block;max-width:850px;margin:0 0 28px;border-radius:15px;overflow:hidden;border:1px solid var(--line)}
+.portfolio-case-visual img{display:block;width:100%;height:auto}
+@media(max-width:1000px){.portfolio-card{grid-column:span 6}}
+@media(max-width:620px){.portfolio-grid{gap:16px}.portfolio-card,.portfolio-card--featured{grid-column:span 12}.portfolio-card-copy{padding:20px}.portfolio-card-copy h3{font-size:1.45rem}}
+@media(prefers-reduced-motion:reduce){.portfolio-card-visual img{transition:none}}
