@@ -16,6 +16,7 @@ const outDir = 'public/assets/work-previews';
 await mkdir(outDir, { recursive: true });
 const browser = await chromium.launch({ headless: true, args: ['--no-sandbox'] });
 const captures = [];
+const errors = [];
 const blocked = /(attention required|just a moment|checking your browser|error 1020|access denied|this site can.t be reached)/i;
 try {
   for (const [slug, url, expected] of websites) {
@@ -40,11 +41,18 @@ try {
       await page.screenshot({ path: file, type: 'jpeg', quality: 80, animations: 'disabled' });
       captures.push({ slug, url, title, file, viewport: '1280x800', screenshot: 'desktop top viewport', capturedUtc: new Date().toISOString() });
       console.log(`Captured ${slug}: ${title}`);
+    } catch (error) {
+      // Some live sites restrict automated browsers. Never capture or publish a challenge page.
+      const message = String(error?.message || error);
+      errors.push({slug, url, error: message});
+      console.warn(`Cannot capture ${slug}: ${message}`);
     } finally {
       await context.close();
     }
   }
-  await writeFile(`${outDir}/capture-metadata.json`, JSON.stringify(captures, null, 2) + '\n');
+  await writeFile(`${outDir}/capture-metadata.json`, JSON.stringify({captures, errors}, null, 2) + '\n');
+  console.log(`Captures: ${captures.length}/6; protected/unavailable: ${errors.length}`);
+  if (captures.length === 0) throw new Error('No authentic homepage previews could be captured');
 } finally {
   await browser.close();
 }
