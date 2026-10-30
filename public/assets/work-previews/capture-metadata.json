@@ -1,0 +1,44 @@
+{
+  "captures": [
+    {
+      "slug": "kiwi-gardeners",
+      "url": "https://kiwigardeners.com/",
+      "title": "Christchurch Gardening, Lawn Mowing & Tidy-Ups | Kiwi Gardeners",
+      "file": "public/assets/work-previews/kiwi-gardeners.jpg",
+      "viewport": "1280x800",
+      "screenshot": "desktop top viewport",
+      "capturedUtc": "2026-10-30T01:57:50.145Z"
+    },
+    {
+      "slug": "grid-eater",
+      "url": "https://grideater.com/",
+      "title": "Web Design, Hosting & AI Automation NZ | GRID EATER",
+      "file": "public/assets/work-previews/grid-eater.jpg",
+      "viewport": "1280x800",
+      "screenshot": "desktop top viewport",
+      "capturedUtc": "2026-10-30T01:57:52.926Z"
+    }
+  ],
+  "errors": [
+    {
+      "slug": "natalie-g-winters",
+      "url": "https://nataliegwinters.com/",
+      "error": "https://nataliegwinters.com/: HTTP 403"
+    },
+    {
+      "slug": "america-first-limited",
+      "url": "https://americafirst.co.nz/",
+      "error": "https://americafirst.co.nz/: HTTP 403"
+    },
+    {
+      "slug": "america-first-nz",
+      "url": "https://americafirst.nz/",
+      "error": "https://americafirst.nz/: expected homepage identity America First not found; got America First NZ | America First Limited — New Zealand"
+    },
+    {
+      "slug": "david-ruck",
+      "url": "https://davidaruck.com/",
+      "error": "https://davidaruck.com/: HTTP 403"
+    }
+  ]
+}
