@@ -36,7 +36,7 @@ try {
       const title = await page.title();
       const text = (await page.locator('body').innerText()).slice(0, 5000);
       if (blocked.test(title) || blocked.test(text.slice(0, 800))) throw new Error(`${url}: appears to show bot challenge or error page (${title})`);
-      if (!text.toLowerCase().includes(expected.toLowerCase())) throw new Error(`${url}: expected homepage identity ${expected} not found; got ${title}`);
+      if (!(text + " " + title).toLowerCase().includes(expected.toLowerCase())) throw new Error(`${url}: expected homepage identity ${expected} not found; got ${title}`);
       const file = `${outDir}/${slug}.jpg`;
       await page.screenshot({ path: file, type: 'jpeg', quality: 80, animations: 'disabled' });
       captures.push({ slug, url, title, file, viewport: '1280x800', screenshot: 'desktop top viewport', capturedUtc: new Date().toISOString() });
