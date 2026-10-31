@@ -82,10 +82,47 @@ if (/NatalieGWinters|my-account\/denise-ruck/i.test(llms)) fail(llmsPath, 'llms.
 
 const sitemapPath = path.join(PUBLIC.pathname, 'sitemap.xml');
 const sitemap = await readFile(sitemapPath, 'utf8');
-if (!sitemap.includes('https://davidaruck.com/work/')) fail(sitemapPath, 'missing current-work route');
-if (!sitemap.includes('https://davidaruck.com/music/')) fail(sitemapPath, 'missing music route');
-if (!sitemap.includes('https://davidaruck.com/media/')) fail(sitemapPath, 'missing media route');
-if (/\/my-account\//i.test(sitemap)) fail(sitemapPath, 'curated sitemap should not promote the long-form archive');
+const sitemapUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => match[1]);
+const sitemapUrlSet = new Set(sitemapUrls);
+if (!sitemap.includes('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')) fail(sitemapPath, 'missing standard sitemap namespace');
+if (sitemapUrls.length !== (sitemap.match(/<url>/g) || []).length) fail(sitemapPath, 'each sitemap URL must have exactly one loc element');
+if (sitemapUrlSet.size !== sitemapUrls.length) fail(sitemapPath, 'duplicate sitemap URL');
+for (const loc of sitemapUrls) {
+  try {
+    const url = new URL(loc);
+    if (url.origin !== 'https://davidaruck.com' || !url.pathname.endsWith('/') || url.search || url.hash) {
+      fail(sitemapPath, 'non-canonical sitemap URL: ' + loc);
+    }
+  } catch {
+    fail(sitemapPath, 'invalid sitemap URL: ' + loc);
+  }
+}
+for (const [, lastmod] of sitemap.matchAll(/<lastmod>([^<]+)<\/lastmod>/g)) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(lastmod) || Number.isNaN(Date.parse(lastmod))) {
+    fail(sitemapPath, 'invalid lastmod date: ' + lastmod);
+  }
+}
+const indexableUrls = new Set();
+for (const file of htmlFiles) {
+  const html = await readFile(file, 'utf8');
+  const relative = path.relative(PUBLIC.pathname, file).split(path.sep).join('/');
+  const expected = new URL(relative.replace(/index\.html$/, ''), 'https://davidaruck.com/').href;
+  const canonical = html.match(/<link\s+rel=["']canonical["']\s+href=["']([^"']+)["']/i)?.[1];
+  if (canonical !== expected) fail(file, 'canonical URL does not match page path: expected ' + expected);
+  const robots = html.match(/<meta\s+name=["']robots["']\s+content=["']([^"']+)["']/i)?.[1] || '';
+  if (/\bnoindex\b/i.test(robots)) {
+    if (sitemapUrlSet.has(expected)) fail(sitemapPath, 'noindex page included: ' + expected);
+  } else {
+    indexableUrls.add(expected);
+    if (!sitemapUrlSet.has(expected)) fail(sitemapPath, 'indexable page missing: ' + expected);
+  }
+}
+for (const url of sitemapUrlSet) {
+  if (!indexableUrls.has(url)) fail(sitemapPath, 'unrecognised or non-indexable page listed: ' + url);
+}
+const robotsPath = path.join(PUBLIC.pathname, 'robots.txt');
+const robots = await readFile(robotsPath, 'utf8');
+if (!/^Sitemap: https:\/\/davidaruck\.com\/sitemap\.xml$/m.test(robots)) fail(robotsPath, 'robots.txt does not advertise canonical sitemap');
 
 for (const file of publicFiles.filter(file => /\.(?:png|jpe?g)$/i.test(file))) {
   const info = await stat(file);
