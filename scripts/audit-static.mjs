@@ -77,6 +77,10 @@ const worker = await readFile(workerPath, 'utf8');
 if (!worker.includes('class="theme-toggle"')) fail(workerPath, 'global header is missing the theme toggle');
 if (!worker.includes('href="/music/"') || !worker.includes('href="/media/"')) fail(workerPath, 'global navigation must expose music and media');
 if (/linkedin(?:\.com)?/i.test(worker)) fail(workerPath, 'LinkedIn references are not allowed in the shared footer');
+if (!worker.includes('href="https://orcid.org/0009-0009-3029-9422"') || !worker.includes('https://orcid.org/sites/default/files/images/orcid_16x16.png')) fail(workerPath, 'shared footer is missing the official ORCID profile link or icon');
+const headersPath = path.join(PUBLIC.pathname, '_headers');
+const headers = await readFile(headersPath, 'utf8');
+if (!headers.includes("img-src 'self' data: https://orcid.org")) fail(headersPath, 'ORCID logo host is missing from image CSP');
 
 const llmsPath = path.join(PUBLIC.pathname, 'llms.txt');
 const llms = await readFile(llmsPath, 'utf8');
