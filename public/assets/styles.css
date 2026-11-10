@@ -571,6 +571,8 @@ h3 {
   filter: brightness(0) invert(1);
 }
 
+.social-link--orcid img { filter: none; opacity: 1; }
+
 .social-link:hover img { opacity: 1; }
 
 .footer-sites {
