@@ -78,7 +78,7 @@ if (!worker.includes('class="theme-toggle"')) fail(workerPath, 'global header is
 if (!worker.includes('href="/music/"') || !worker.includes('href="/media/"')) fail(workerPath, 'global navigation must expose music and media');
 if (/linkedin(?:\.com)?/i.test(worker)) fail(workerPath, 'LinkedIn references are not allowed in the shared footer');
 if (!worker.includes('href="https://orcid.org/0009-0009-3029-9422"') || !worker.includes('src="/assets/icons/orcid.svg"')) fail(workerPath, 'shared footer is missing the ORCID profile link or local icon');
-if (!worker.includes('class="social-link social-link--youtube"') || !worker.includes('src="/assets/icons/youtube.svg"')) fail(workerPath, 'shared footer is missing the local YouTube icon');
+if (!worker.includes('class="social-link social-link--youtube"') || !worker.includes('src="/assets/icons/youtube.svg?v=20261111"')) fail(workerPath, 'shared footer is missing the local YouTube icon');
 if (/src="https:\/\/orcid\.org\/sites\//.test(worker)) fail(workerPath, 'footer must not hotlink the redirecting ORCID logo');
 const orcidIconPath = path.join(PUBLIC.pathname, 'assets', 'icons', 'orcid.svg');
 const orcidIcon = await readFile(orcidIconPath, 'utf8');
