@@ -35,6 +35,7 @@ for (const file of htmlFiles) {
   if (/<style\b/i.test(html)) fail(file, 'contains an inline <style> block');
   if (inlineExecutableScript) fail(file, 'contains executable inline JavaScript');
   if (/pagead2\.googlesyndication\.com/i.test(html)) fail(file, 'contains AdSense');
+  if (/linkedin(?:\.com)?/i.test(html)) fail(file, 'LinkedIn references are not allowed in published page HTML');
   if (/https:\/\/www\.youtube\.com\/embed\//i.test(html)) fail(file, 'uses www.youtube.com for an embed; use youtube-nocookie.com to match CSP');
   if (!/<title>[^<]+<\/title>/i.test(html)) fail(file, 'missing a non-empty title');
   if (!/<meta name="description" content="[^"]+"/i.test(html)) fail(file, 'missing a meta description');
@@ -75,6 +76,7 @@ const workerPath = path.join(ROOT.pathname, 'src', 'index.js');
 const worker = await readFile(workerPath, 'utf8');
 if (!worker.includes('class="theme-toggle"')) fail(workerPath, 'global header is missing the theme toggle');
 if (!worker.includes('href="/music/"') || !worker.includes('href="/media/"')) fail(workerPath, 'global navigation must expose music and media');
+if (/linkedin(?:\.com)?/i.test(worker)) fail(workerPath, 'LinkedIn references are not allowed in the shared footer');
 
 const llmsPath = path.join(PUBLIC.pathname, 'llms.txt');
 const llms = await readFile(llmsPath, 'utf8');
