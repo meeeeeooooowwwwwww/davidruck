@@ -25,7 +25,7 @@ const htmlFiles = publicFiles.filter(file => file.endsWith('.html'));
 
 for (const file of htmlFiles) {
   const html = await readFile(file, 'utf8');
-  const styleLinks = html.match(/<link rel="stylesheet" href="\/assets\/styles\.css">/g) || [];
+  const styleLinks = html.match(/<link rel="stylesheet" href="\/assets\/styles\.css(?:\?v=[a-zA-Z0-9_-]+)?">/g) || [];
   const h1Count = (html.match(/<h1\b/gi) || []).length;
   const inlineExecutableScript = /<script(?![^>]*type=["']application\/ld\+json["'])[^>]*>[\s\S]*?<\/script>/i.test(html);
   const remoteImages = [...html.matchAll(/<img[^>]+src=["'](https?:\/\/[^"']+)["']/gi)].map(match => match[1]);
