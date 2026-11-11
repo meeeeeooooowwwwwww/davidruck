@@ -51,6 +51,23 @@ for (const file of htmlFiles) {
   }
 }
 
+// Music video facades must never require JS to show a thumbnail.
+const musicPath = path.join(PUBLIC.pathname, 'music/index.html');
+const musicHtml = await readFile(musicPath, 'utf8');
+const videoScopes = [...musicHtml.matchAll(/data-youtube-id="([\w-]{11})"/g)];
+if (videoScopes.length < 10) fail(musicPath, 'music memoir is missing video selections');
+for (let i = 0; i < videoScopes.length; i++) {
+  const id = videoScopes[i][1];
+  const scope = musicHtml.slice(videoScopes[i].index, i + 1 < videoScopes.length ? videoScopes[i + 1].index : undefined);
+  if (!scope.includes('data-youtube-thumbnail src="https://i.ytimg.com/vi/' + id + '/hqdefault.jpg"')) {
+    fail(musicPath, 'missing initial server-rendered hq thumbnail for ' + id);
+  }
+}
+const videoScript = await readFile(path.join(PUBLIC.pathname, 'assets', 'site.js'), 'utf8');
+if (!videoScript.includes("image.addEventListener('error', advanceThumbnail)") || !videoScript.includes('image.hidden = true')) {
+  fail(musicPath, 'video thumbnail fallback chain is missing');
+}
+
 const homePath = path.join(PUBLIC.pathname, 'index.html');
 const home = await readFile(homePath, 'utf8');
 if (/<iframe\b/i.test(home)) fail(homePath, 'homepage contains an embedded iframe; use the click-to-load video facade');

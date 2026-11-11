@@ -79,8 +79,24 @@ function initYouTubeFacades() {
     if (!videoId) continue;
 
     for (const image of scope.querySelectorAll('[data-youtube-thumbnail]')) {
-      image.src = `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
-      image.addEventListener('error', () => { image.src = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`; }, { once: true });
+      // hqdefault is available for more videos than maxresdefault.
+      // Keep a real src in the HTML so thumbnails do not depend on JS execution.
+      const qualities = ['hqdefault.jpg', 'mqdefault.jpg', 'default.jpg'];
+      let attempt = Math.max(0, qualities.findIndex(name => (image.getAttribute('src') || '').endsWith(name)));
+      const advanceThumbnail = () => {
+        attempt += 1;
+        if (attempt < qualities.length) {
+          image.src = `https://i.ytimg.com/vi/${videoId}/${qualities[attempt]}`;
+        } else {
+          // Retain the visible poster and play button even when thumbnails are blocked.
+          image.hidden = true;
+          image.closest('.video-facade-button')?.classList.add('thumbnail-unavailable');
+        }
+      };
+      image.addEventListener('error', advanceThumbnail);
+      if (!image.getAttribute('src')) image.src = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+      // Cached failures can finish before the deferred script attaches the listener.
+      else if (image.complete && !image.naturalWidth) advanceThumbnail();
     }
 
     for (const link of scope.querySelectorAll('[data-youtube-link]')) {
