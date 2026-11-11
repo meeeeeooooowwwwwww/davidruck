@@ -54,7 +54,7 @@ for (const file of htmlFiles) {
 // Music video facades must never require JS to show a thumbnail.
 const musicPath = path.join(PUBLIC.pathname, 'music/index.html');
 const musicHtml = await readFile(musicPath, 'utf8');
-const videoScopes = [...musicHtml.matchAll(/data-youtube-id="([\\w-]{11})"/g)];
+const videoScopes = [...musicHtml.matchAll(/data-youtube-id="([\w-]{11})"/g)];
 if (videoScopes.length < 10) fail(musicPath, 'music memoir is missing video selections');
 for (let i = 0; i < videoScopes.length; i++) {
   const id = videoScopes[i][1];
