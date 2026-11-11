@@ -72,7 +72,7 @@ const homePath = path.join(PUBLIC.pathname, 'index.html');
 const home = await readFile(homePath, 'utf8');
 if (/<iframe\b/i.test(home)) fail(homePath, 'homepage contains an embedded iframe; use the click-to-load video facade');
 if (/D\.O\.B\.|P\.O\.B\.|birthDate/i.test(home)) fail(homePath, 'homepage exposes personal birth details that are not needed on the curated public front end');
-const featuredVideoId = home.match(/<div class="home-video-card" id="featured-video" data-youtube-id="([\\w-]{11})"/)?.[1];
+const featuredVideoId = home.match(/<div class="home-video-card" id="featured-video" data-youtube-id="([\w-]{11})"/)?.[1];
 if (!featuredVideoId) fail(homePath, 'homepage is missing a valid featured video facade');
 else {
   const thumbnail = `https://i.ytimg.com/vi/${featuredVideoId}/maxresdefault.jpg`;
