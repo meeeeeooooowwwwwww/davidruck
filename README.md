@@ -45,7 +45,7 @@ Avoid adding page-local `<style>` blocks or new override stylesheets unless ther
 - legacy fragment redirects for previously published media anchors;
 - shared click-to-load YouTube facades on pages that use them.
 
-The homepage uses the featured Rumble embed, while other pages can still use the shared click-to-load YouTube facade. The professional site does not load AdSense.
+The homepage uses a click-to-load YouTube video facade with a static thumbnail, while other pages can use the same shared player. The professional site does not load AdSense.
 
 ### Worker
 
