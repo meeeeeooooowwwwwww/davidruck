@@ -2879,3 +2879,24 @@ h3 { color: var(--text); }
 .music-single-listen-copy a { color: var(--accent); font-weight: 750; }
 @media (max-width: 720px) { .music-listening-grid, .music-single-listen { grid-template-columns: 1fr; } .music-single-listen { padding: 17px; } .music-listening-card-copy { padding: 18px; } }
 @media (prefers-reduced-motion: reduce) { .music-listening-card * { scroll-behavior: auto; } }
+
+/* Resilient video posters: visible text/gradient even if YouTube image CDN is unavailable. */
+.video-facade-button { isolation: isolate; }
+.video-facade-button::before {
+  content: "PLAY VIDEO";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 38px;
+  background: radial-gradient(ellipse at 18% 22%, rgba(194, 103, 54, .37), transparent 48%), linear-gradient(135deg, #39271d, #110f10 70%);
+  color: rgba(255, 247, 234, .68);
+  font: 800 .73rem/1.5 ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: .18em;
+  text-align: center;
+  z-index: 0;
+}
+.video-facade-button img { position: relative; z-index: 1; }
+.video-facade-button img[hidden] { display: none; }
+.video-facade-overlay { z-index: 2; }
+.video-facade-label { z-index: 3; }
