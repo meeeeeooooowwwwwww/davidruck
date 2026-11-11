@@ -72,7 +72,17 @@ const homePath = path.join(PUBLIC.pathname, 'index.html');
 const home = await readFile(homePath, 'utf8');
 if (/<iframe\b/i.test(home)) fail(homePath, 'homepage contains an embedded iframe; use the click-to-load video facade');
 if (/D\.O\.B\.|P\.O\.B\.|birthDate/i.test(home)) fail(homePath, 'homepage exposes personal birth details that are not needed on the curated public front end');
-if (!/data-youtube-id="2AwmwORrepc"/.test(home)) fail(homePath, 'homepage is missing the approved featured video facade');
+const featuredVideoId = home.match(/<div class="home-video-card" id="featured-video" data-youtube-id="([\\w-]{11})"/)?.[1];
+if (!featuredVideoId) fail(homePath, 'homepage is missing a valid featured video facade');
+else {
+  const thumbnail = `https://i.ytimg.com/vi/${featuredVideoId}/maxresdefault.jpg`;
+  if (!home.includes(`data-youtube-thumbnail src="${thumbnail}"`)) fail(homePath, 'homepage video thumbnail does not match featured video ID');
+  if (!home.includes(`<meta property="og:image" content="${thumbnail}">`)) fail(homePath, 'homepage Open Graph image does not match featured video ID');
+  if (!home.includes(`<meta name="twitter:image" content="${thumbnail}">`)) fail(homePath, 'homepage Twitter image does not match featured video ID');
+  if (!home.includes(`"thumbnailUrl":["${thumbnail}"]`)) fail(homePath, 'homepage video JSON-LD thumbnail does not match featured video ID');
+  if (!home.includes(`"contentUrl":"https://www.youtube.com/watch?v=${featuredVideoId}"`)) fail(homePath, 'homepage video JSON-LD content URL does not match featured video ID');
+  if (!home.includes(`"embedUrl":"https://www.youtube-nocookie.com/embed/${featuredVideoId}"`)) fail(homePath, 'homepage video JSON-LD embed URL does not match featured video ID');
+}
 if (!/"@type":"VideoObject"/.test(home)) fail(homePath, 'homepage structured data is missing VideoObject');
 if (!/<meta name="twitter:card" content="summary_large_image">/.test(home)) fail(homePath, 'homepage is missing large-image social metadata');
 if (!home.includes('\"alternateName\":[\"David A. Ruck\",\"Dave Ruck\",\"DJ Ruckus\"]')) fail(homePath, 'David Ruck person aliases missing');
