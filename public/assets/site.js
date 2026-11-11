@@ -73,6 +73,14 @@ function getYouTubeId(element) {
   return /^[\w-]{11}$/.test(videoId) ? videoId : null;
 }
 
+// Optional per-video playback offset (seconds), used for album/song entry points.
+function getYouTubeStart(element) {
+  const raw = element.closest('[data-youtube-id]')?.dataset.youtubeStart;
+  if (!raw || !/^\d+$/.test(raw)) return 0;
+  const seconds = Number(raw);
+  return Number.isSafeInteger(seconds) ? seconds : 0;
+}
+
 function initYouTubeFacades() {
   for (const scope of document.querySelectorAll('[data-youtube-id]')) {
     const videoId = getYouTubeId(scope);
@@ -100,7 +108,8 @@ function initYouTubeFacades() {
     }
 
     for (const link of scope.querySelectorAll('[data-youtube-link]')) {
-      link.href = `https://www.youtube.com/watch?v=${videoId}`;
+      const start = getYouTubeStart(scope);
+      link.href = `https://www.youtube.com/watch?v=${videoId}${start ? `&t=${start}s` : ''}`;
     }
   }
 
@@ -113,7 +122,8 @@ function initYouTubeFacades() {
     if (!container || !videoId) return;
 
     const iframe = document.createElement('iframe');
-    iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
+    const start = getYouTubeStart(button);
+    iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0${start ? `&start=${start}` : ''}`;
     iframe.title = button.getAttribute('aria-label') || 'YouTube video';
     iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
     iframe.referrerPolicy = 'strict-origin-when-cross-origin';
