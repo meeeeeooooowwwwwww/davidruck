@@ -160,6 +160,39 @@ for (const file of publicFiles.filter(file => /\.(?:png|jpe?g)$/i.test(file))) {
   if (info.size > 1_000_000) fail(file, `source raster is ${(info.size / 1_000_000).toFixed(2)} MB; optimise it before committing`);
 }
 
+// Events / Media separation and 1990s-vs-modern video reference regression checks.
+const eventsHubPath = path.join(PUBLIC.pathname, 'events/index.html');
+const alienPath = path.join(PUBLIC.pathname, 'events/alien-strike-zone/index.html');
+const mediaHubPath = path.join(PUBLIC.pathname, 'media/index.html');
+const eventsHub = await readFile(eventsHubPath, 'utf8');
+const alien = await readFile(alienPath, 'utf8');
+const mediaHub = await readFile(mediaHubPath, 'utf8');
+if (!eventsHub.includes('href="/events/alien-strike-zone/"') || !eventsHub.includes('href="/media/surreal/"')) {
+  fail(eventsHubPath, 'Events hub must link both Alien Strike Zone and Surreal');
+}
+if (!mediaHub.includes('href="/media/alt-tv/"') || !mediaHub.includes('href="/media/pulzarfm/"') || !mediaHub.includes('href="/events/"')) {
+  fail(mediaHubPath, 'Media hub must link ALT TV, PulzarFM and the separate Events collection');
+}
+if (!worker.includes('href="/events/"') || !worker.includes('href="/media/"') || !worker.includes('href="/music/"')) {
+  fail(workerPath, 'global navigation must expose distinct Music, Events and Media destinations');
+}
+if (!musicHtml.includes('href="/events/alien-strike-zone/"')) {
+  fail(musicPath, 'Music must link the expanded immersive event production history');
+}
+for (const videoId of ['MMSaw6-Ewtk', 'Eu2C2X_FDHY']) {
+  if (!alien.includes('data-youtube-id="' + videoId + '"') ||
+      !alien.includes('data-youtube-thumbnail src="https://i.ytimg.com/vi/' + videoId + '/hqdefault.jpg"')) {
+    fail(alienPath, 'Event video facade missing static thumbnail for ' + videoId);
+  }
+}
+if (!alien.includes('not historical footage') || !alien.includes('no dubstep') && !alien.includes('no dubstep scene')) {
+  fail(alienPath, 'Event references must distinguish modern visuals from the mid-1990s production');
+}
+const surrealStory = await readFile(path.join(PUBLIC.pathname,'media/surreal/index.html'),'utf8');
+if (!surrealStory.includes('href="/events/alien-strike-zone/"')) {
+  fail(alienPath,'Surreal story must link the canonical full Alien Strike Zone account');
+}
+
 if (failures.length) {
   console.error('\nStatic audit failed:');
   for (const failure of failures) console.error(`- ${failure}`);
