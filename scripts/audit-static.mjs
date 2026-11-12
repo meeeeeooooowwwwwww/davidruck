@@ -68,11 +68,11 @@ if (!videoScript.includes("image.addEventListener('error', advanceThumbnail)") |
   fail(musicPath, 'video thumbnail fallback chain is missing');
 }
 
-// The Igorrr full-album selection must preserve the requested 21:48 playback offset.
-if (!musicHtml.includes('data-youtube-id="KNJ0B5uU1QQ" data-youtube-start="1308"')) {
-  fail(musicPath, 'Igorrr full-album player is missing the requested 21:48 start');
+// The Igorrr full-album selection must preserve the requested 4:23 playback offset.
+if (!musicHtml.includes('data-youtube-id="KNJ0B5uU1QQ" data-youtube-start="263"')) {
+  fail(musicPath, 'Igorrr full-album player is missing the requested 4:23 start');
 }
-if (!musicHtml.includes('https://www.youtube.com/watch?v=KNJ0B5uU1QQ&amp;t=1308s')) {
+if (!musicHtml.includes('https://www.youtube.com/watch?v=KNJ0B5uU1QQ&amp;t=263s')) {
   fail(musicPath, 'Igorrr non-JavaScript YouTube link is missing the requested start');
 }
 if (!videoScript.includes('function getYouTubeStart(') || !videoScript.includes('&start=${start}') || !videoScript.includes('&t=${start}s')) {
