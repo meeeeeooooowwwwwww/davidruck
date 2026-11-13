@@ -20,20 +20,18 @@ function renderGlobalHeader(pathname) {
   return `<a class="skip-link" href="#main-content">Skip to content</a><nav class="nav" aria-label="Primary navigation"><a class="brand" href="/" aria-label="David Ruck home">David Ruck</a><div class="nav-links">${links}</div><button class="theme-toggle" type="button" aria-pressed="false" aria-label="Toggle colour theme"><span class="theme-sun" aria-hidden="true">☀</span><span class="theme-switch" aria-hidden="true"><i></i></span><span class="theme-moon" aria-hidden="true">☾</span><span class="sr-only">Toggle colour theme</span></button><details class="mobile-nav"><summary aria-label="Open navigation menu"><span class="mobile-nav-icon" aria-hidden="true"><i></i><i></i><i></i></span><span class="mobile-nav-label">MENU</span></summary><div class="mobile-nav-panel">${links}</div></details></nav>`;
 }
 
-// Injected with the shared header so every page has the active state immediately,
-// without relying on a cached stylesheet or client-side navigation script.
-const ACTIVE_NAV_STYLES = `<style>
-.nav-links a[aria-current] { color: var(--accent); }
-.nav-links a[aria-current]::after { right: 0; }
-.mobile-nav-panel a[aria-current] {
-  color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
-  font-weight: 800;
-}
-</style>`;
 const GLOBAL_FOOTER = `<div class="footer-copy"><strong>David Ruck</strong><br><span>© 2026 · Christchurch, New Zealand · business, music and the stories between them</span></div><div class="footer-social" aria-label="David Ruck social profiles"><a class="social-link" href="https://substack.com/@davidruck" target="_blank" rel="me noopener"><img src="/assets/icons/substack.svg" alt="" width="22" height="22"><span>Substack</span></a><a class="social-link social-link--orcid" href="https://orcid.org/0009-0009-3029-9422" target="_blank" rel="me noopener noreferrer" aria-label="David Ruck ORCID iD 0009-0009-3029-9422"><img src="/assets/icons/orcid.svg" alt="" width="19" height="19"><span>ORCID</span></a><a class="social-link" href="https://github.com/meeeeeooooowwwwwww" target="_blank" rel="me noopener"><img src="/assets/icons/github.svg" alt="" width="22" height="22"><span>GitHub</span></a><a class="social-link social-link--youtube" href="https://www.youtube.com/@AmericaFirstNZ" target="_blank" rel="noopener"><img src="/assets/icons/youtube.svg?v=20261111" alt="" width="22" height="22"><span>YouTube</span></a></div><div class="footer-sites"><a href="/music/">Music</a><span>·</span><a href="/events/">Events</a><span>·</span><a href="/media/">Media</a><span>·</span><a href="https://grideater.com" target="_blank" rel="noopener">GRID EATER</a><span>·</span><a href="https://americafirst.co.nz" target="_blank" rel="noopener">America First Limited</a><span>·</span><a href="https://americafirst.nz/" target="_blank" rel="noopener noreferrer">America First NZ</a></div>`;
 
-class GlobalHeadHandler { element(element) { element.append(ACTIVE_NAV_STYLES + '<script src="/assets/theme-init.js"></script><script src="/assets/site.js" defer></script>', { html: true }); } }
+// Version the shared stylesheet on the server so browsers do not reuse cached rules.
+class SharedStylesheetHandler {
+  element(element) {
+    const href = element.getAttribute('href') || '';
+    if (href.startsWith('/assets/styles.css')) {
+      element.setAttribute('href', '/assets/styles.css?v=active-nav-20261113');
+    }
+  }
+}
+class GlobalHeadHandler { element(element) { element.append('<script src="/assets/theme-init.js"></script><script src="/assets/site.js" defer></script>', { html: true }); } }
 class GlobalHeaderHandler {
   constructor(pathname) { this.pathname = pathname; }
   element(element) { element.setInnerContent(renderGlobalHeader(this.pathname), { html: true }); }
@@ -64,7 +62,7 @@ export default {
     const response = await env.ASSETS.fetch(request);
     const contentType = response.headers.get('content-type') || '';
     if (!contentType.includes('text/html')) return response;
-    let rewriter = new HTMLRewriter().on('head', new GlobalHeadHandler()).on('.site-header', new GlobalHeaderHandler(pathname)).on('.footer', new GlobalFooterHandler()).on('main', new MainContentHandler()).on('a[target="_blank"]', new ExternalReferralLinkHandler());
+    let rewriter = new HTMLRewriter().on('head', new GlobalHeadHandler()).on('link[rel="stylesheet"]', new SharedStylesheetHandler()).on('.site-header', new GlobalHeaderHandler(pathname)).on('.footer', new GlobalFooterHandler()).on('main', new MainContentHandler()).on('a[target="_blank"]', new ExternalReferralLinkHandler());
     rewriter = applyChapterEnhancements(rewriter, pathname);
     if (pathname === '/my-account') rewriter = rewriter.on('.source-note', new MyAccountSourceNoteHandler());
     return rewriter.transform(response);
