@@ -3183,3 +3183,22 @@ h3 { color: var(--text); }
 @media(prefers-reduced-motion:reduce) {
  .story-hub-links a,.story-route-card,.story-hero-link { transition: none; }
 }
+
+
+/* Active primary navigation: external stylesheet required by Content Security Policy.
+   Covers both top-level pages and their nested sections via aria-current. */
+.site-header .nav-links a[aria-current] {
+  color: var(--accent);
+  font-weight: 800;
+}
+.site-header .nav-links a[aria-current]::after {
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+}
+.site-header .mobile-nav-panel a[aria-current] {
+  color: var(--accent);
+  font-weight: 800;
+  border-left: 2px solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
