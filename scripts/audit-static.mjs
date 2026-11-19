@@ -86,6 +86,7 @@ if (/D\.O\.B\.|P\.O\.B\.|birthDate/i.test(home)) fail(homePath, 'homepage expose
 const featuredVideoId = home.match(/<div class="home-video-card" id="featured-video" data-youtube-id="([\w-]{11})"/)?.[1];
 if (!featuredVideoId) fail(homePath, 'homepage is missing a valid featured video facade');
 if (featuredVideoId !== '-Zmv97_0mG8') fail(homePath, 'homepage must feature Last Night Again by LilScopic');
+if (home.includes('class="video-facade-label"')) fail(homePath, 'homepage featured video must not show text over the thumbnail');
 if (!home.includes('aria-label="Play Last Night Again by LilScopic"') || !home.includes('"name":"Last Night Again — LilScopic"')) fail(homePath, 'homepage featured video title/artist metadata is out of sync');
 else {
   const thumbnail = `https://i.ytimg.com/vi/${featuredVideoId}/maxresdefault.jpg`;
