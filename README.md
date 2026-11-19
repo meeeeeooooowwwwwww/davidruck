@@ -45,7 +45,7 @@ Avoid adding page-local `<style>` blocks or new override stylesheets unless ther
 - legacy fragment redirects for previously published media anchors;
 - shared click-to-load YouTube facades on pages that use them.
 
-The homepage uses a click-to-load YouTube video facade with a static thumbnail, while other pages can use the same shared player. The professional site does not load AdSense.
+The homepage features **Looney Tunes: Rabbit of Seville (1950)** through the supplied Rumble iframe (`https://rumble.com/embed/v7gf5wo/?pub=4kxtac`) in the existing 16:9 feature slot, with no separate title overlay or caption. Rumble owns the in-player cover art. Other pages retain shared click-to-load YouTube facades. The old LilScopic YouTube poster and associated social image metadata were removed rather than retaining a stale cover. A verified static Rumble poster URL can be added to social and VideoObject metadata if needed. The professional site does not load AdSense.
 
 ### Worker
 
@@ -75,7 +75,7 @@ Large raster source media is optimised before it is committed. Production deploy
 
 Run `npm run audit`.
 
-The audit checks every HTML page for exactly one shared stylesheet, canonical empty header/footer placeholders, core title/description/canonical/H1 metadata, retired stylesheet references, inline style blocks, executable inline JavaScript, AdSense, the expected homepage Rumble embed, fragile external image hotlinks and unexpectedly large raster media.
+The audit checks every HTML page for exactly one shared stylesheet, canonical empty header/footer placeholders, core title/description/canonical/H1 metadata, retired stylesheet references, inline style blocks, executable inline JavaScript, AdSense, the exact supplied homepage Rumble embed and absence of stale LilScopic metadata, fragile external image hotlinks and unexpectedly large raster media.
 
 ## Information architecture
 
