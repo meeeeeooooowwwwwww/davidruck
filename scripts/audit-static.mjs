@@ -81,19 +81,19 @@ if (!videoScript.includes('function getYouTubeStart(') || !videoScript.includes(
 
 const homePath = path.join(PUBLIC.pathname, 'index.html');
 const home = await readFile(homePath, 'utf8');
-const heroEmbed = 'https://rumble.com/embed/v7gf5wo/?pub=4kxtac';
-const originalRumbleUrl = 'https://rumble.com/v7iliu6-looney-tunes-rabbit-of-seville-1950-a-masterpiece-of-human-creativity.html';
+const heroEmbed = 'https://www.youtube-nocookie.com/embed/7OXCAh1Gg2A';
+const originalVideoUrl = 'https://www.youtube.com/watch?v=7OXCAh1Gg2A';
 if ((home.match(/<iframe\b/g) || []).length !== 1) fail(homePath, 'homepage must have exactly one embedded player');
-if (!home.includes(`<iframe src="${heroEmbed}" title="Looney Tunes: Rabbit of Seville (1950) on Rumble" loading="lazy"`)) fail(homePath, 'homepage must use the exact supplied Rumble embed and a descriptive accessible title');
+if (!home.includes(`<iframe src="${heroEmbed}" title="Featured video on YouTube" loading="lazy"`)) fail(homePath, 'homepage must use the exact supplied YouTube embed and a descriptive accessible title');
 if (!home.includes('class="home-video-card" id="featured-video"')) fail(homePath, 'homepage featured-video container missing');
 if (!home.includes('class="video-facade"')) fail(homePath, 'homepage widescreen feature wrapper missing');
 if (/D\.O\.B\.|P\.O\.B\.|birthDate/i.test(home)) fail(homePath, 'homepage exposes personal birth details that are not needed on the curated public front end');
 if (home.includes('class="video-facade-label"')) fail(homePath, 'homepage video must not show a text overlay');
 if (home.includes('data-youtube-id="-Zmv97_0mG8"') || home.includes('Last Night Again') || home.includes('LilScopic')) fail(homePath, 'replaced YouTube video metadata remains');
-if (!home.includes('"name":"Looney Tunes: Rabbit of Seville (1950)"') || !home.includes(`"contentUrl":"${originalRumbleUrl}"`) || !home.includes(`"embedUrl":"${heroEmbed}"`)) fail(homePath, 'Rumble structured data must match homepage embed');
+if (!home.includes('"name":"Featured video"') || !home.includes(`"contentUrl":"${originalVideoUrl}"`) || !home.includes(`"embedUrl":"${heroEmbed}"`)) fail(homePath, 'Video structured data must match homepage embed');
 if (home.includes('i.ytimg.com/vi/-Zmv97_0mG8')) fail(homePath, 'stale YouTube thumbnail or social metadata remains');
 if (!/"@type":"VideoObject"/.test(home)) fail(homePath, 'homepage structured data is missing VideoObject');
-if (!/<meta name="twitter:card" content="summary">/.test(home)) fail(homePath, 'homepage must avoid large-image social card when no verified static Rumble poster URL is available');
+if (!/<meta name="twitter:card" content="summary">/.test(home)) fail(homePath, 'homepage must avoid large-image social card when no verified static video poster URL is available');
 if (!home.includes('\"alternateName\":[\"David A. Ruck\",\"Dave Ruck\",\"DJ Ruckus\"]')) fail(homePath, 'David Ruck person aliases missing');
 const biography=await readFile(path.join(PUBLIC.pathname,'about/index.html'),'utf8');
 if (!biography.includes('\"@type\":\"ProfilePage\"')) fail(homePath,'About profile structured data missing');
